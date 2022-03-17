@@ -6,8 +6,9 @@
 #ifndef SCHAUER_SJOB_H
 #define SCHAUER_SJOB_H
 
-#include <QObject>
 #include "schauer_global.h"
+#include <QObject>
+#include <memory>
 
 namespace Schauer {
 
@@ -100,10 +101,11 @@ public:
      * \see totalAmount()
      */
     enum Unit {
-        Bytes,          /**< Directory and file sizes in bytes. */
+        Bytes = 0,      /**< Directory and file sizes in bytes. */
         Files,          /**< The number of files handled by the job. */
         Directories,    /**< The number of directories handled by the job. */
-        Items           /**< The number of items (e.g. both directories and files) handled by the job. */
+        Items,          /**< The number of items (e.g. both directories and files) handled by the job. */
+        UnitsCount      /**< \internal used internally only, do not use */
     };
     Q_ENUM(Unit)
 
@@ -264,6 +266,27 @@ public:
      */
     bool isAutoDelete() const;
 
+    /*!
+     * This method can be used to indicate to classes listening to signals from a job
+     * that they should ideally show a progress bar, but not a finished notification.
+     *
+     * For example when opening a remote URL, a job will emit the progress of the
+     * download, which can be used to show a progress dialog or a Plasma notification,
+     * then when the job is done it'll emit e.g. the finished signal. Showing the user the
+     * progress dialog is useful, however the dialog/notification about the download being
+     * finished isn't of much interest, because the user can see the application that invoked
+     * the job opening the actual file that was downloaded.
+     */
+    void setFinishedNotificationHidden(bool hide = true);
+
+    /*!
+     * Whether to <em>not</em> show a finished notification when a job's finished
+     * signal is emitted.
+     *
+     * \sa setFinishedNotificationHidden()
+     */
+    bool isFinishedNotificationHidden() const;
+
 public Q_SLOTS:
     /*!
      * \brief Aborts this job.
@@ -420,8 +443,44 @@ Q_SIGNALS:
      * \param job       the job that emitted this signal
      * \param unit      the unit of the total amount
      * \param amount    the total amount
+     *
+     * \deprecated use the SJob::totalAmountChanged(Schauer::SJob *job, SJob::Unit unit, qulonglong amount) signal
      */
-    void totalAmount(Schauer::SJob *job, SJob::Unit unit, qulonglong amount);
+    [[deprecated("Use SJob::totalAmountChanged(Schauer::SJob *job, SJob::Unit unit, qulonglong amount) signal")]]
+    void totalAmount(Schauer::SJob *job, SJob::Unit unit, qulonglong amount); // clazy:exclude=overloaded-signal
+
+    /*!
+     * \brief Emitted when we know the amount the job will have to process.
+     *
+     * The unit of this amount is sent too. It can be emitted several times if the job manages several different units.
+     *
+     * \note This is a private signal, it shouldn’t be emitted directly by subclasses of %SJob, use setTotalAmount() instead.
+     *
+     * \param job       the job that emitted this signal
+     * \param unit      the unit of the total amount
+     * \param amount    the total amount
+     */
+    void totalAmountChanged(Schauer::SJob *job, SJob::Unit unit, qulonglong amount
+#if !defined(W_DOXYGEN)
+                            , QPrivateSignal
+#endif
+                            );
+
+    /*!
+     * \brief Regularly emitted to show the progress of this job by giving the current amount.
+     *
+     * The unit of this amount is sent too. It can be emitted several times if the job manages several different units.
+     *
+     * \note This is a private signal, it shouldn’t be emitted directly by subclasses of %SJob, use setProcessedAmount() instead.
+     *
+     * \param job       the job that emitted this signal
+     * \param unit      the unit of the processed amount
+     * \param amount    the processed amount
+     *
+     * \deprecated use the SJob::processedAmountChanged(Schauer::SJob *job, SJob::Unit unit, qulonglong amount) signal
+     */
+    [[deprecated("Use SJob::processedAmount(Schauer::SJob *job, SJob::Unit unit, qulonglong amount) signal")]]
+    void processedAmount(Schauer::SJob *job, SJob::Unit unit, qulonglong amount); // clazy:exclude=overloaded-signal
 
     /*!
      * \brief Regularly emitted to show the progress of this job by giving the current amount.
@@ -434,7 +493,11 @@ Q_SIGNALS:
      * \param unit      the unit of the processed amount
      * \param amount    the processed amount
      */
-    void processedAmount(Schauer::SJob *job, SJob::Unit unit, qulonglong amount);
+    void processedAmountChanged(Schauer::SJob *job, SJob::Unit unit, qulonglong amount
+#if !defined(W_DOXYGEN)
+                                , QPrivateSignal
+#endif
+                                );
 
     /*!
      * \brief Emitted when we know the size of this job (data size in bytes for transfers, number of entries for listings, etc).
@@ -465,8 +528,27 @@ Q_SIGNALS:
      *
      * \param job       the job that emitted this signal
      * \param percent   the percentage
+     *
+     * \deprecated use the SJob::percentChanged(Schauer::SJob *job, unsigned long percent) signal
      */
-    void percent(Schauer::SJob *job, unsigned long percent);
+    [[deprecated("Use SJob::percentChanged(Schauer::SJob *job, unsigned long percent) signal")]]
+    void percent(Schauer::SJob *job, unsigned long percent); // clazy:exclude=overloaded-signal
+
+    /*!
+     * \brief Progress signal showing the overall progress of the job This is valid for
+     * any kind of job, and allows using a a progress bar very easily.
+     *
+     * \note This is a private signal, it shouldn’t be emitted directly by subclasses of %SJob,
+     * use emitPercent(), setPercent(), setTotalAmount() or setProcessedAmount() instead.
+     *
+     * \param job       the job that emitted this signal
+     * \param percent   the percentage
+     */
+    void percentChanged(Schauer::SJob *job, unsigned long percent
+#if !defined(W_DOXYGEN)
+                        , QPrivateSignal
+#endif
+                        );
 
     /*!
      * \brief Emitted to display information about the speed of this job.
@@ -635,13 +717,12 @@ protected:
      */
     void emitSpeed(unsigned long speed);
 
-    SJobPrivate *const d_ptr;
+    std::unique_ptr<SJobPrivate> const d_ptr;
     SJob(SJobPrivate &dd, QObject *parent = nullptr);
 
 private:
     void finishJob(bool emitResult);
 
-    Q_PRIVATE_SLOT(d_func(), void _k_speedTimeout());
     Q_DECLARE_PRIVATE(SJob)
     Q_DISABLE_COPY(SJob)
 };

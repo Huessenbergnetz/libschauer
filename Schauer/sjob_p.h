@@ -9,6 +9,7 @@
 #include "sjob.h"
 #include <QMap>
 #include <QEventLoopLocker>
+#include <array>
 
 class QTimer;
 class QEventLoop;
@@ -26,8 +27,14 @@ public:
     QString errorText;
     int error = SJob::NoError;
     SJob::Unit progressUnit = SJob::Bytes;
-    QMap<SJob::Unit, qulonglong> processedAmount;
-    QMap<SJob::Unit, qulonglong> totalAmount;
+
+    struct Amounts {
+        qulonglong processedAmount = 0;
+        qulonglong totalAmount = 0;
+    };
+
+    std::array<Amounts, SJob::UnitsCount> m_jobAmounts;
+
     unsigned long percentage = 0;
     QTimer *speedTimer = nullptr;
     QEventLoop *eventLoop = nullptr;
@@ -37,8 +44,9 @@ public:
     SJob::Capabilities capabilities = SJob::NoCapabilities;
     bool suspended = false;
     bool isAutoDelete = true;
+    bool m_hideFinishedNotification = false;
 
-    void _k_speedTimeout();
+    void speedTimeout();
 
     bool isFinished = false;
 

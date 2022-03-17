@@ -4,7 +4,7 @@
  */
 
 #include "sjob_p.h"
-
+#include "logging.h"
 #include <QEventLoop>
 #include <QTimer>
 
@@ -20,7 +20,7 @@ SJobPrivate::~SJobPrivate()
 
 }
 
-void SJobPrivate::_k_speedTimeout()
+void SJobPrivate::speedTimeout()
 {
     Q_Q(SJob);
     Q_EMIT q->speed(q, 0);
@@ -47,7 +47,6 @@ SJob::~SJob()
     }
 
     delete d_ptr->speedTimer;
-    delete d_ptr;
 }
 
 SJob::Capabilities SJob::capabilities() const
@@ -197,12 +196,20 @@ QString SJob::errorString() const
 
 qulonglong SJob::processedAmount(Unit unit) const
 {
-    return d_func()->processedAmount[unit];
+    if (unit >= UnitsCount) {
+        qCWarning(schCore) << "SJob::processedAmount() was called on an invalid Unit" << unit;
+        return 0;
+    }
+    return d_func()->m_jobAmounts[unit].processedAmount;
 }
 
 qulonglong SJob::totalAmount(Unit unit) const
 {
-    return d_func()->totalAmount[unit];
+    if (unit >= UnitsCount) {
+        qCWarning(schCore) << "SJob::totalAmount() was called on an invalid Unit" << unit;
+        return 0;
+    }
+    return d_func()->m_jobAmounts[unit].totalAmount;
 }
 
 unsigned long SJob::percent() const
@@ -230,15 +237,18 @@ void SJob::setErrorText(const QString &errorText)
 void SJob::setProcessedAmount(Unit unit, qulonglong amount)
 {
     Q_D(SJob);
-    bool should_emit = (d->processedAmount[unit] != amount);
+    auto &[processed, total] = d->m_jobAmounts[unit];
 
-    d->processedAmount[unit] = amount;
+    const bool should_emit = (processed != amount);
+
+    processed = amount;
 
     if (should_emit) {
         Q_EMIT processedAmount(this, unit, amount);
+        Q_EMIT processedAmountChanged(this, unit, amount, QPrivateSignal());
         if (unit == d->progressUnit) {
             Q_EMIT processedSize(this, amount);
-            emitPercent(d->processedAmount[unit], d->totalAmount[unit]);
+            emitPercent(processed, total);
         }
     }
 }
@@ -246,15 +256,18 @@ void SJob::setProcessedAmount(Unit unit, qulonglong amount)
 void SJob::setTotalAmount(Unit unit, qulonglong amount)
 {
     Q_D(SJob);
-    bool should_emit = (d->totalAmount[unit] != amount);
+    auto &[processed, total] = d->m_jobAmounts[unit];
 
-    d->totalAmount[unit] = amount;
+    const bool should_emit = (total != amount);
+
+    total = amount;
 
     if (should_emit) {
         Q_EMIT totalAmount(this, unit, amount);
+        Q_EMIT totalAmountChanged(this, unit, amount, QPrivateSignal());
         if (unit == d->progressUnit) {
             Q_EMIT totalSize(this, amount);
-            emitPercent(d->processedAmount[unit], d->totalAmount[unit]);
+            emitPercent(processed, total);
         }
     }
 }
@@ -271,6 +284,7 @@ void SJob::setPercent(unsigned long percentage)
     if (d->percentage != percentage) {
         d->percentage = percentage;
         Q_EMIT percent(this, percentage);
+        Q_EMIT percentChanged(this, percentage, QPrivateSignal());
     }
 }
 
@@ -300,6 +314,9 @@ void SJob::emitSpeed(unsigned long value)
     if (!d->speedTimer) {
         d->speedTimer = new QTimer(this);
         connect(d->speedTimer, SIGNAL(timeout()), SLOT(_k_speedTimeout()));
+        connect(d->speedTimer, &QTimer::timeout, this, [d]() {
+            d->speedTimeout();
+        });
     }
 
     Q_EMIT speed(this, value);
@@ -319,5 +336,16 @@ void SJob::setAutoDelete(bool autodelete)
     d->isAutoDelete = autodelete;
 }
 
+void SJob::setFinishedNotificationHidden(bool hide)
+{
+    Q_D(SJob);
+    d->m_hideFinishedNotification = hide;
+}
+
+bool SJob::isFinishedNotificationHidden() const
+{
+    Q_D(const SJob);
+    return d->m_hideFinishedNotification;
+}
 
 #include "moc_sjob.cpp"
