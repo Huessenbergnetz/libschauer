@@ -20,6 +20,8 @@ class SJobPrivate;
  * This is a reimplementation of <A HREF="https://api.kde.org/frameworks/kcoreaddons/html/classKJob.html">KJob from KDE Frameworks’ KCoreAddons</A>,
  * it is meant for platforms and systems where KJob is not available. If KCoreAddons are available, you should build
  * libschauer with `cmake -DWITH_KDE` to use the original KJob implementation.
+ *
+ * \todo Hide deprecated stuff behind preprocessor macro.
  */
 class SCHAUER_LIBRARY SJob : public QObject
 {
