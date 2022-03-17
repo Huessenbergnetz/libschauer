@@ -121,7 +121,7 @@ if (WITH_KDE)
         PUBLIC
             SCHAUER_WITH_KDE
     )
-    target_link_libraries(schauer
+    target_link_libraries(SchauerQt${QT_VERSION_MAJOR}
         PUBLIC
             KF5::CoreAddons
     )
