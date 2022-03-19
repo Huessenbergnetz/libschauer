@@ -49,6 +49,7 @@ enum {
     EmptyReply,                 /**< The repsone data is empty but that was not expected. */
     EmptyJson,                  /**< The repsone data is empty but that was not expected. */
     WrongOutputType,            /**< The output type is not the expected one. */
+    InvalidInput,               /**< Some input data is not valid. */
     UnknownError                /**< An unknown error. */
 };
 

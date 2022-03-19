@@ -576,6 +576,8 @@ QString Job::errorString() const
         //: Error message
         //% "Unexpected JSON type in received data."
         return qtTrId("libschauer-error-invalid-output-type");
+    case InvalidInput:
+        return errorText();
     default:
         //: Error message
         //% "Sorry, but unfortunately an unknown error has occurred."
