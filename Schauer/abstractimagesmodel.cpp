@@ -42,41 +42,13 @@ bool AbstractImagesModelPrivate::loadFromJson(const QJsonDocument &json)
         const QJsonObject o = img.toObject();
         const QString id = o.value(QStringLiteral("Id")).toString();
         const QString parentId = o.value(QStringLiteral("ParentId")).toString();
-
-        QStringList repoTags;
-        {
-            const QJsonArray repoTagsArray = o.value(QStringLiteral("RepoTags")).toArray();
-            repoTags.reserve(repoTagsArray.size());
-            for (const QJsonValue &repoTag : repoTagsArray) {
-                repoTags << repoTag.toString();
-            }
-        }
-
-        QStringList repoDigests;
-        {
-            const QJsonArray repoDigestsArray = o.value(QStringLiteral("RepoDigests")).toArray();
-            repoDigests.reserve(repoDigestsArray.size());
-            for (const QJsonValue &repoDigest : repoDigestsArray) {
-                repoDigests << repoDigest.toString();
-            }
-        }
-
+        const QStringList repoTags = AbstractBaseModelPrivate::jsonArrayToStringList(o.value(QStringLiteral("RepoTags")));
+        const QStringList repoDigests = AbstractBaseModelPrivate::jsonArrayToStringList(o.value(QStringLiteral("RepoDigests")));
         const QDateTime created = QDateTime::fromSecsSinceEpoch(static_cast<qint64>(o.value(QStringLiteral("Created")).toDouble()), Qt::UTC);
         const qint64 size = static_cast<qint64>(o.value(QStringLiteral("Size")).toDouble());
         const qint64 virtualSize = static_cast<qint64>(o.value(QStringLiteral("VirtualSize")).toDouble());
         const qint64 sharedSize = static_cast<qint64>(o.value(QStringLiteral("SharedSize")).toDouble());
-
-        QMap<QString,QString> labels;
-        {
-            const QJsonObject labelsObject = o.value(QStringLiteral("Labels")).toObject();
-            if (!labelsObject.empty()) {
-                const QStringList labelsKeys = labelsObject.keys();
-                for (const QString &labelsKey : labelsKeys) {
-                    labels.insert(labelsKey, labelsObject.value(labelsKey).toString());
-                }
-            }
-        }
-
+        const QMap<QString,QString> labels = AbstractBaseModelPrivate::jsonObjectToStringMap(o.value(QStringLiteral("Labels")));
         const int containers = o.value(QStringLiteral("Containers")).toInt();
 
         images.emplace_back(id, parentId, repoTags, repoDigests, created, size, virtualSize, sharedSize, labels, containers);
