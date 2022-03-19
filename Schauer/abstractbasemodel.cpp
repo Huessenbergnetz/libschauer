@@ -110,6 +110,40 @@ void AbstractBaseModelPrivate::setError(int code, const QString &errorString)
     }
 }
 
+QStringList AbstractBaseModelPrivate::jsonArrayToStringList(const QJsonArray &array)
+{
+    QStringList _list;
+    if (!array.empty()) {
+        _list.reserve(array.size());
+        for (const QJsonValue &val : array) {
+            _list << val.toString();
+        }
+    }
+    return _list;
+}
+
+QStringList AbstractBaseModelPrivate::jsonArrayToStringList(const QJsonValue &value)
+{
+    return AbstractBaseModelPrivate::jsonArrayToStringList(value.toArray());
+}
+
+QMap<QString,QString> AbstractBaseModelPrivate::jsonObjectToStringMap(const QJsonObject &object)
+{
+    QMap<QString,QString> _map;
+    if (!object.isEmpty()) {
+        const QStringList keys = object.keys();
+        for (const QString &key : keys) {
+            _map.insert(key, object.value(key).toString());
+        }
+    }
+    return _map;
+}
+
+QMap<QString,QString> AbstractBaseModelPrivate::jsonObjectToStringMap(const QJsonValue &value)
+{
+    return AbstractBaseModelPrivate::jsonObjectToStringMap(value.toObject());
+}
+
 AbstractBaseModel::AbstractBaseModel(QObject *parent)
     : QAbstractItemModel(parent), s_ptr(new AbstractBaseModelPrivate(this))
 {

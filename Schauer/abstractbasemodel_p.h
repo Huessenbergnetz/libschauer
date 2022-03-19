@@ -35,6 +35,12 @@ public:
     int error() const;
     QString errorString() const;
 
+    static QStringList jsonArrayToStringList(const QJsonArray &array);
+    static QStringList jsonArrayToStringList(const QJsonValue &value);
+
+    static QMap<QString,QString> jsonObjectToStringMap(const QJsonObject &object);
+    static QMap<QString,QString> jsonObjectToStringMap(const QJsonValue &value);
+
 protected:
     AbstractBaseModel *q_ptr = nullptr;
 
