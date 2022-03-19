@@ -11,10 +11,16 @@
 
 namespace Schauer {
 
+/*!
+ * \ingroup api-jobs
+ * \defgroup api-jobs-containers Containers
+ * \brief Job classes to handle and modify Docker containers
+ */
+
 class ListContainersJobPrivate;
 
 /*!
- * \ingroup api-jobs
+ * \ingroup api-jobs-containers
  * \brief Queries the list of available containers form the Docker daemon.
  *
  * Use this class to get a list of available containers from the Docker daemon.
