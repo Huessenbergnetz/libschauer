@@ -7,7 +7,7 @@
 #include <QSignalSpy>
 #include <QAbstractItemModelTester>
 #include <Schauer/VersionListModel>
-#include <Schauer/ImagesListModel>
+#include <Schauer/ImageListModel>
 
 using namespace Schauer;
 
@@ -23,7 +23,7 @@ private Q_SLOTS:
     void initTestCase() {}
 
     void testVersionListModel();
-    void testImagesListModel();
+    void testImageListModel();
 
     void cleanupTestCase() {}
 };
@@ -34,9 +34,9 @@ void ModelTest::testVersionListModel()
     new QAbstractItemModelTester(versionListModel, this);
 }
 
-void ModelTest::testImagesListModel()
+void ModelTest::testImageListModel()
 {
-    auto model = new ImagesListModel(this);
+    auto model = new ImageListModel(this);
     new QAbstractItemModelTester(model, this);
 
     // test showAll property
