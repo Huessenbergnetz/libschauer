@@ -10,7 +10,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QVersionNumber>
 
 using namespace Schauer;
 
