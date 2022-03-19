@@ -44,12 +44,24 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         abstractimagesmodel.cpp
         abstractimagesmodel.h
         abstractimagesmodel_p.h
-        imageslistmodel.cpp
-        imageslistmodel.h
-        imageslistmodel_p.h
+        imagelistmodel.cpp
+        imagelistmodel.h
+        imagelistmodel_p.h
         listcontainersjob.cpp
         listcontainersjob.h
         listcontainersjob_p.h
+        createcontainerjob.cpp
+        createcontainerjob.h
+        createcontainerjob_p.h
+        startcontainerjob.cpp
+        startcontainerjob.h
+        startcontainerjob_p.h
+        stopcontainerjob.cpp
+        stopcontainerjob.h
+        stopcontainerjob_p.h
+        removecontainerjob.cpp
+        removecontainerjob.h
+        removecontainerjob_p.h
 )
 
 set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
@@ -68,10 +80,18 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         listimagesjob.h
         ListImagesJob
         abstractimagesmodel.h
-        imageslistmodel.h
-        ImagesListModel
+        imagelistmodel.h
+        ImageListModel
         listcontainersjob.h
         ListContainersJob
+        createcontainerjob.h
+        CreateContainerJob
+        startcontainerjob.h
+        StartContainerJob
+        stopcontainerjob.h
+        StopContainerJob
+        removecontainerjob.h
+        RemoveContainerJob
 )
 
 add_library(SchauerQt${QT_VERSION_MAJOR}::Core ALIAS SchauerQt${QT_VERSION_MAJOR})

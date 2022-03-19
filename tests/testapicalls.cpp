@@ -12,7 +12,11 @@
 #include <Schauer/VersionListModel>
 #include <Schauer/ListImagesJob>
 #include <Schauer/VersionListModel>
-#include <Schauer/ImagesListModel>
+#include <Schauer/ImageListModel>
+#include <Schauer/CreateContainerJob>
+#include <Schauer/StartContainerJob>
+#include <Schauer/StopContainerJob>
+#include <Schauer/RemoveContainerJob>
 
 using namespace Schauer;
 
@@ -34,8 +38,9 @@ private slots:
     void testVersionListModelAsync();
     void testListImagesJobSync();
     void testListImagesJobAsync();
-    void testImagesListModelSync();
-    void testImagesListModelAsync();
+    void testImageListModelSync();
+    void testImageListModelAsync();
+    void testContainerOperations();
 
     void cleanupTestCase();
 
@@ -162,9 +167,9 @@ void ApiCallsTest::testListImagesJobAsync()
     QVERIFY(!succeededSpy.at(0).at(0).toJsonDocument().array().empty());
 }
 
-void ApiCallsTest::testImagesListModelSync()
+void ApiCallsTest::testImageListModelSync()
 {
-    auto model = new ImagesListModel(this);
+    auto model = new ImageListModel(this);
     QVERIFY(model->load(AbstractBaseModel::LoadSync));
     QVERIFY(model->rowCount() > 0);
     QVERIFY(model->containsRepoTag(QLatin1String("hello-world")));
@@ -173,9 +178,9 @@ void ApiCallsTest::testImagesListModelSync()
     QVERIFY(!model->containsRepoTag(QLatin1String("dummer-schiss"), QLatin1String("latest")));
 }
 
-void ApiCallsTest::testImagesListModelAsync()
+void ApiCallsTest::testImageListModelAsync()
 {
-    auto model = new ImagesListModel(this);
+    auto model = new ImageListModel(this);
     QSignalSpy loadedSpy(model, &AbstractBaseModel::loaded);
     QSignalSpy isLoadingSpy(model, &AbstractBaseModel::isLoadingChanged);
     model->load();
@@ -185,6 +190,31 @@ void ApiCallsTest::testImagesListModelAsync()
     QCOMPARE(isLoadingSpy.at(0).at(0).toBool(), true);
     QCOMPARE(isLoadingSpy.at(1).at(0).toBool(), false);
     QVERIFY(model->rowCount() > 0);
+}
+
+void ApiCallsTest::testContainerOperations()
+{
+    const QString containerName = QStringLiteral("/my-little-container");
+    QVariantHash containerConfig;
+    containerConfig.insert(QStringLiteral("Image"), QStringLiteral("hello-world:latest"));
+
+    // create a new container
+    auto create = new CreateContainerJob(this);
+    create->setName(containerName);
+    create->setContainerConfig(containerConfig);
+    QVERIFY(create->exec());
+    const QString containerId = create->replyData().object().value(QStringLiteral("Id")).toString();
+    QVERIFY(!containerId.isEmpty());
+
+    // start container
+    auto start = new StartContainerJob(this);
+    start->setId(containerId);
+    QVERIFY(start->exec());
+
+    // remove the container
+    auto remove = new RemoveContainerJob(this);
+    remove->setId(containerId);
+    QVERIFY(remove->exec());
 }
 
 void ApiCallsTest::cleanupTestCase()
