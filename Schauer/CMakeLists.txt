@@ -17,42 +17,39 @@ endif (NOT WITH_KDE)
 
 target_sources(SchauerQt${QT_VERSION_MAJOR}
     PRIVATE
-        schauer_global.h
-        abstractnamfactory.cpp
-        abstractnamfactory.h
-        abstractconfiguration.cpp
-        abstractconfiguration.h
-        logging.h
-        job.cpp
-        job.h
-        job_p.h
         abstractbasemodel.cpp
         abstractbasemodel.h
         abstractbasemodel_p.h
-        getversionjob.cpp
-        getversionjob.h
-        getversionjob_p.h
-        abstractversionmodel.cpp
-        abstractversionmodel.h
-        abstractversionmodel_p.h
-        versionlistmodel.cpp
-        versionlistmodel.h
-        versionlistmodel_p.h
-        listimagesjob.cpp
-        listimagesjob.h
-        listimagesjob_p.h
+        abstractconfiguration.cpp
+        abstractconfiguration.h
         abstractimagesmodel.cpp
         abstractimagesmodel.h
         abstractimagesmodel_p.h
-        imagelistmodel.cpp
-        imagelistmodel.h
-        imagelistmodel_p.h
-        listcontainersjob.cpp
-        listcontainersjob.h
-        listcontainersjob_p.h
+        abstractnamfactory.cpp
+        abstractnamfactory.h
+        abstractversionmodel.cpp
+        abstractversionmodel.h
+        abstractversionmodel_p.h
         createcontainerjob.cpp
         createcontainerjob.h
         createcontainerjob_p.h
+        getversionjob.cpp
+        getversionjob.h
+        getversionjob_p.h
+        imagelistmodel.cpp
+        imagelistmodel.h
+        imagelistmodel_p.h
+        job.cpp
+        job.h
+        job_p.h
+        listcontainersjob.cpp
+        listcontainersjob.h
+        listcontainersjob_p.h
+        listimagesjob.cpp
+        listimagesjob.h
+        listimagesjob_p.h
+        logging.h
+        schauer_global.h
         startcontainerjob.cpp
         startcontainerjob.h
         startcontainerjob_p.h
@@ -62,36 +59,39 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         removecontainerjob.cpp
         removecontainerjob.h
         removecontainerjob_p.h
+        versionlistmodel.cpp
+        versionlistmodel.h
+        versionlistmodel_p.h
 )
 
 set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
     APPEND PROPERTY PUBLIC_HEADER
-        schauer_global.h
-        abstractnamfactory.h
-        AbstractNamFactory
+        abstractbasemodel.h
         abstractconfiguration.h
         AbstractConfiguration
-        abstractbasemodel.h
+        abstractimagesmodel.h
+        abstractnamfactory.h
+        AbstractNamFactory
+        abstractversionmodel.h
+        createcontainerjob.h
+        CreateContainerJob
+        schauer_global.h
         getversionjob.h
         GetVersionJob
-        abstractversionmodel.h
-        versionlistmodel.h
-        VersionListModel
-        listimagesjob.h
-        ListImagesJob
-        abstractimagesmodel.h
         imagelistmodel.h
         ImageListModel
         listcontainersjob.h
         ListContainersJob
-        createcontainerjob.h
-        CreateContainerJob
+        listimagesjob.h
+        ListImagesJob
         startcontainerjob.h
         StartContainerJob
         stopcontainerjob.h
         StopContainerJob
         removecontainerjob.h
         RemoveContainerJob
+        versionlistmodel.h
+        VersionListModel
 )
 
 add_library(SchauerQt${QT_VERSION_MAJOR}::Core ALIAS SchauerQt${QT_VERSION_MAJOR})
