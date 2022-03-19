@@ -17,6 +17,7 @@
 #include <Schauer/StartContainerJob>
 #include <Schauer/StopContainerJob>
 #include <Schauer/RemoveContainerJob>
+#include <Schauer/ContainerListModel>
 
 using namespace Schauer;
 
@@ -40,7 +41,8 @@ private slots:
     void testListImagesJobAsync();
     void testImageListModelSync();
     void testImageListModelAsync();
-    void testContainerOperations();
+    void testContainerOperationsSync();
+    void testContainerOperationsAsync();
 
     void cleanupTestCase();
 
@@ -192,9 +194,9 @@ void ApiCallsTest::testImageListModelAsync()
     QVERIFY(model->rowCount() > 0);
 }
 
-void ApiCallsTest::testContainerOperations()
+void ApiCallsTest::testContainerOperationsSync()
 {
-    const QString containerName = QStringLiteral("/my-little-container");
+    const QString containerName = QStringLiteral("/my-little-container-sync");
     QVariantHash containerConfig;
     containerConfig.insert(QStringLiteral("Image"), QStringLiteral("hello-world:latest"));
 
@@ -206,6 +208,19 @@ void ApiCallsTest::testContainerOperations()
     const QString containerId = create->replyData().object().value(QStringLiteral("Id")).toString();
     QVERIFY(!containerId.isEmpty());
 
+    auto model = new ContainerListModel(this);
+    model->setShowAll(true);
+    model->load(AbstractBaseModel::LoadSync);
+    QVERIFY(model->rowCount() > 0);
+    QVERIFY(model->contains(containerName));
+    QVERIFY(model->contains(containerId));
+    QVERIFY(!model->contains(QLatin1String("/ahsdfashdf")));
+    QVERIFY(!model->contains(QLatin1String("adasdf")));
+    QVERIFY(!model->contains(QLatin1String()));
+    QVERIFY(model->containsImage(QLatin1String("hello-world:latest")));
+    QVERIFY(!model->containsImage(QLatin1String("dummer:schiss")));
+    QVERIFY(!model->containsImage(QLatin1String()));
+
     // start container
     auto start = new StartContainerJob(this);
     start->setId(containerId);
@@ -215,6 +230,102 @@ void ApiCallsTest::testContainerOperations()
     auto remove = new RemoveContainerJob(this);
     remove->setId(containerId);
     QVERIFY(remove->exec());
+}
+
+void ApiCallsTest::testContainerOperationsAsync()
+{
+    const QString containerName = QStringLiteral("/my-little-container-async");
+    QVariantHash containerConfig;
+    containerConfig.insert(QStringLiteral("Image"), QStringLiteral("hello-world:latest"));
+
+    QString containerId;
+
+    // create a new container
+    auto create = new CreateContainerJob(this);
+    create->setName(containerName);
+    create->setContainerConfig(containerConfig);
+    {
+        QSignalSpy finishedSpy(create, &SJob::finished);
+        QSignalSpy resultSpy(create, &SJob::result);
+        QSignalSpy succeededSpy(create, &Job::succeeded);
+        QSignalSpy failedSpy(create, &Job::failed);
+        create->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(create->error(), 0);
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<CreateContainerJob*>(), create);
+        QCOMPARE(resultSpy.count(), 1);
+        QCOMPARE(resultSpy.at(0).at(0).value<CreateContainerJob*>(), create);
+        QCOMPARE(failedSpy.count(), 0);
+        QCOMPARE(succeededSpy.count(), 1);
+        containerId = succeededSpy.at(0).at(0).toJsonDocument().object().value(QStringLiteral("Id")).toString();
+        QVERIFY(!containerId.isEmpty());
+    }
+
+    auto model = new ContainerListModel(this);
+    model->setShowAll(true);
+    {
+        QSignalSpy loadedSpy(model, &AbstractBaseModel::loaded);
+        QSignalSpy isLoadingSpy(model, &AbstractBaseModel::isLoadingChanged);
+        QSignalSpy errorSpy(model, &AbstractBaseModel::errorChanged);
+        model->load();
+        QVERIFY(loadedSpy.wait());
+        QCOMPARE(loadedSpy.count(), 1);
+        QCOMPARE(isLoadingSpy.count(), 2);
+        QCOMPARE(isLoadingSpy.at(0).at(0).toBool(), true);
+        QCOMPARE(isLoadingSpy.at(1).at(0).toBool(), false);
+        QCOMPARE(errorSpy.count(), 0);
+        QVERIFY(model->rowCount() > 0);
+        QCOMPARE(model->error(), 0);
+        QVERIFY(model->contains(containerName));
+        QVERIFY(model->contains(containerId));
+        QVERIFY(!model->contains(QLatin1String("/ahsdfashdf")));
+        QVERIFY(!model->contains(QLatin1String("adasdf")));
+        QVERIFY(!model->contains(QLatin1String()));
+        QVERIFY(model->containsImage(QLatin1String("hello-world:latest")));
+        QVERIFY(!model->containsImage(QLatin1String("dummer:schiss")));
+        QVERIFY(!model->containsImage(QLatin1String()));
+    }
+
+    // start container
+    auto start = new StartContainerJob(this);
+    start->setId(containerId);
+    {
+        QSignalSpy finishedSpy(start, &SJob::finished);
+        QSignalSpy resultSpy(start, &SJob::result);
+        QSignalSpy succeededSpy(start, &Job::succeeded);
+        QSignalSpy failedSpy(start, &Job::failed);
+        start->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(start->error(), 0);
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<StartContainerJob*>(), start);
+        QCOMPARE(resultSpy.count(), 1);
+        QCOMPARE(resultSpy.at(0).at(0).value<StartContainerJob*>(), start);
+        QCOMPARE(failedSpy.count(), 0);
+        QCOMPARE(succeededSpy.count(), 1);
+        QVERIFY(succeededSpy.at(0).at(0).toJsonDocument().isEmpty());
+    }
+
+    // remove the container
+    auto remove = new RemoveContainerJob(this);
+    remove->setId(containerId);
+    {
+        QSignalSpy finishedSpy(remove, &SJob::finished);
+        QSignalSpy resultSpy(remove, &SJob::result);
+        QSignalSpy succeededSpy(remove, &Job::succeeded);
+        QSignalSpy failedSpy(remove, &Job::failed);
+        remove->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(remove->error(), 0);
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<RemoveContainerJob*>(), remove);
+        QCOMPARE(resultSpy.count(), 1);
+        QCOMPARE(resultSpy.at(0).at(0).value<RemoveContainerJob*>(), remove);
+        QCOMPARE(failedSpy.count(), 0);
+        QCOMPARE(succeededSpy.count(), 1);
+        QVERIFY(succeededSpy.at(0).at(0).toJsonDocument().isEmpty());
+    }
 }
 
 void ApiCallsTest::cleanupTestCase()

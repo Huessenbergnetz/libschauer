@@ -8,6 +8,7 @@
 #include <QAbstractItemModelTester>
 #include <Schauer/VersionListModel>
 #include <Schauer/ImageListModel>
+#include <Schauer/ContainerListModel>
 
 using namespace Schauer;
 
@@ -24,6 +25,7 @@ private Q_SLOTS:
 
     void testVersionListModel();
     void testImageListModel();
+    void testContainerListModel();
 
     void cleanupTestCase() {}
 };
@@ -56,6 +58,32 @@ void ModelTest::testImageListModel()
     const QVariantList showDigestsSpyArgs = showDigestsSpy.takeFirst();
     QCOMPARE(showDigestsSpyArgs.at(0).toBool(), true);
     QVERIFY(model->showDigests());
+}
+
+void ModelTest::testContainerListModel()
+{
+    auto model = new ContainerListModel(this);
+    new QAbstractItemModelTester(model, this);
+
+    // test showAll property
+    {
+        QSignalSpy spy(model, &AbstractContainerModel::showAllChanged);
+        QCOMPARE(model->showAll(), false); // default value
+        model->setShowAll(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(model->showAll(), true);
+    }
+
+    // test showSize property
+    {
+        QSignalSpy spy(model, &AbstractContainerModel::showSizeChanged);
+        QCOMPARE(model->showSize(), false); // default value
+        model->setShowSize(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(model->showSize(), true);
+    }
 }
 
 QTEST_MAIN(ModelTest)

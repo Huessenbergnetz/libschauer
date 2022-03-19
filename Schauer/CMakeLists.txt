@@ -22,6 +22,9 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         abstractbasemodel_p.h
         abstractconfiguration.cpp
         abstractconfiguration.h
+        abstractcontainermodel.cpp
+        abstractcontainermodel.h
+        abstractcontainermodel_p.h
         abstractimagesmodel.cpp
         abstractimagesmodel.h
         abstractimagesmodel_p.h
@@ -30,6 +33,9 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         abstractversionmodel.cpp
         abstractversionmodel.h
         abstractversionmodel_p.h
+        containerlistmodel.cpp
+        containerlistmodel.h
+        containerlistmodel_p.h
         createcontainerjob.cpp
         createcontainerjob.h
         createcontainerjob_p.h
@@ -67,12 +73,15 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
 set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
     APPEND PROPERTY PUBLIC_HEADER
         abstractbasemodel.h
+        abstractcontainermodel.h
         abstractconfiguration.h
         AbstractConfiguration
         abstractimagesmodel.h
         abstractnamfactory.h
         AbstractNamFactory
         abstractversionmodel.h
+        containerlistmodel.h
+        ContainerListModel
         createcontainerjob.h
         CreateContainerJob
         schauer_global.h
@@ -111,7 +120,10 @@ if(CMAKE_VERSION GREATER_EQUAL "3.16.0")
     )
 endif(CMAKE_VERSION GREATER_EQUAL "3.16.0")
 
-target_compile_features(SchauerQt${QT_VERSION_MAJOR} PUBLIC cxx_std_14)
+target_compile_features(SchauerQt${QT_VERSION_MAJOR}
+    PUBLIC cxx_std_14
+    PRIVATE cxx_std_17
+)
 
 target_link_libraries(SchauerQt${QT_VERSION_MAJOR}
     PUBLIC
