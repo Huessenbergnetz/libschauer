@@ -14,7 +14,7 @@ namespace Schauer {
 class ImageListModelPrivate;
 
 /*!
- * \ingroup dta-models
+ * \ingroup data-models
  * \brief List model providing available images.
  * \headerfile "" <Schauer/ImageListModel>
  */
