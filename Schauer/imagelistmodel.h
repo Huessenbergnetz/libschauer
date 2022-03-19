@@ -11,26 +11,26 @@
 
 namespace Schauer {
 
-class ImagesListModelPrivate;
+class ImageListModelPrivate;
 
 /*!
  * \ingroup dta-models
  * \brief List model providing available images.
- * \headerfile "" <Schauer/ImagesListModel>
+ * \headerfile "" <Schauer/ImageListModel>
  */
-class SCHAUER_LIBRARY ImagesListModel : public AbstractImagesModel
+class SCHAUER_LIBRARY ImageListModel : public AbstractImagesModel
 {
     Q_OBJECT
 public:
     /*!
-     * \brief Constructs a new %ImagesListModel with the given \a parent.
+     * \brief Constructs a new %ImageListModel with the given \a parent.
      */
-    explicit ImagesListModel(QObject *parent = nullptr);
+    explicit ImageListModel(QObject *parent = nullptr);
 
     /*!
-     * \brief Destroys the %ImagesListModel.
+     * \brief Destroys the %ImageListModel.
      */
-    ~ImagesListModel() override;
+    ~ImageListModel() override;
 
     enum Roles : int {
         IdRole = Qt::UserRole + 1,
@@ -55,8 +55,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
 
 private:
-    Q_DECLARE_PRIVATE_D(s_ptr, ImagesListModel)
-    Q_DISABLE_COPY(ImagesListModel)
+    Q_DECLARE_PRIVATE_D(s_ptr, ImageListModel)
+    Q_DISABLE_COPY(ImageListModel)
 };
 
 }

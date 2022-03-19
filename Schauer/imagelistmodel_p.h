@@ -6,21 +6,21 @@
 #ifndef SCHAUER_IMAGESLISTMODEL_P_H
 #define SCHAUER_IMAGESLISTMODEL_P_H
 
-#include "imageslistmodel.h"
+#include "imagelistmodel.h"
 #include "abstractimagesmodel_p.h"
 
 namespace Schauer {
 
-class ImagesListModelPrivate : public AbstractImagesModelPrivate
+class ImageListModelPrivate : public AbstractImagesModelPrivate
 {
 public:
-    ImagesListModelPrivate(ImagesListModel *q);
+    ImageListModelPrivate(ImageListModel *q);
 
-    ~ImagesListModelPrivate() override;
+    ~ImageListModelPrivate() override;
 
 private:
-    Q_DISABLE_COPY(ImagesListModelPrivate)
-    Q_DECLARE_PUBLIC(ImagesListModel)
+    Q_DISABLE_COPY(ImageListModelPrivate)
+    Q_DECLARE_PUBLIC(ImageListModel)
 };
 
 }

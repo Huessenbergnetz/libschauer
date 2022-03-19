@@ -3,45 +3,45 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#include "imageslistmodel_p.h"
+#include "imagelistmodel_p.h"
 #include "logging.h"
 
 using namespace Schauer;
 
-ImagesListModelPrivate::ImagesListModelPrivate(ImagesListModel *q)
+ImageListModelPrivate::ImageListModelPrivate(ImageListModel *q)
     : AbstractImagesModelPrivate(q)
 {
 
 }
 
-ImagesListModelPrivate::~ImagesListModelPrivate() = default;
+ImageListModelPrivate::~ImageListModelPrivate() = default;
 
-ImagesListModel::ImagesListModel(QObject *parent)
-    : AbstractImagesModel(* new ImagesListModelPrivate(this), parent)
+ImageListModel::ImageListModel(QObject *parent)
+    : AbstractImagesModel(* new ImageListModelPrivate(this), parent)
 {
 
 }
 
-ImagesListModel::~ImagesListModel() = default;
+ImageListModel::~ImageListModel() = default;
 
-QModelIndex ImagesListModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex ImageListModel::index(int row, int column, const QModelIndex &parent) const
 {
     return hasIndex(row, column, parent) ? createIndex(row, column) : QModelIndex();
 }
 
-QModelIndex ImagesListModel::parent(const QModelIndex &child) const
+QModelIndex ImageListModel::parent(const QModelIndex &child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
-QModelIndex ImagesListModel::sibling(int row, int column, const QModelIndex &idx) const
+QModelIndex ImageListModel::sibling(int row, int column, const QModelIndex &idx) const
 {
     Q_UNUSED(idx);
     return index(row, column);
 }
 
-Qt::ItemFlags ImagesListModel::flags(const QModelIndex &index) const
+Qt::ItemFlags ImageListModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags f = QAbstractItemModel::flags(index);
     if (index.isValid()) {
@@ -50,17 +50,17 @@ Qt::ItemFlags ImagesListModel::flags(const QModelIndex &index) const
     return f;
 }
 
-int ImagesListModel::columnCount(const QModelIndex &parent) const
+int ImageListModel::columnCount(const QModelIndex &parent) const
 {
     return parent.isValid() ? 0 : 1;
 }
 
-bool ImagesListModel::hasChildren(const QModelIndex &parent) const
+bool ImageListModel::hasChildren(const QModelIndex &parent) const
 {
     return parent.isValid() ? false : (rowCount() > 0);
 }
 
-QHash<int, QByteArray> ImagesListModel::roleNames() const
+QHash<int, QByteArray> ImageListModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     roles.insert(IdRole, QByteArrayLiteral("id"));
@@ -76,7 +76,7 @@ QHash<int, QByteArray> ImagesListModel::roleNames() const
     return roles;
 }
 
-QVariant ImagesListModel::data(const QModelIndex &index, int role) const
+QVariant ImageListModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
         qCWarning(schCore) << "Invalid model index" << index;
@@ -88,7 +88,7 @@ QVariant ImagesListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    Q_D(const ImagesListModel);
+    Q_D(const ImageListModel);
 
     const ImageModelItem i = d->images.at(index.row());
 
@@ -118,4 +118,4 @@ QVariant ImagesListModel::data(const QModelIndex &index, int role) const
     }
 }
 
-#include "moc_imageslistmodel.cpp"
+#include "moc_imagelistmodel.cpp"
