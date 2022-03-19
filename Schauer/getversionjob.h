@@ -11,10 +11,16 @@
 
 namespace Schauer {
 
+/*!
+ * \ingroup api-jobs
+ * \defgroup api-jobs-system System
+ * \brief Job classes to get Docker system information
+ */
+
 class GetVersionJobPrivate;
 
 /*!
- * \ingroup api-jobs
+ * \ingroup api-jobs-system
  * \brief Queries version information from the Docker daemon.
  *
  * Use this class to get version information from the running Docker daemon.
