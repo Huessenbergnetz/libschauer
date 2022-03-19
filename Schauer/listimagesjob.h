@@ -11,10 +11,16 @@
 
 namespace Schauer {
 
+/*!
+ * \ingroup api-jobs
+ * \defgroup api-jobs-images Images
+ * \brief Job classes to handle and modify Docker images.
+ */
+
 class ListImagesJobPrivate;
 
 /*!
- * \ingroup api-jobs
+ * \ingroup api-jobs-images
  * \brief Queries the list of available images from the Docker daemon.
  *
  * Use this class to get a list of available images from the docker daemon.
