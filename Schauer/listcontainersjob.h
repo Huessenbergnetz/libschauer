@@ -138,19 +138,19 @@ public:
 
 Q_SIGNALS:
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::limit limit\endlink property.
+     * \brief Notifier signal for the \link ListContainersJob::limit limit\endlink property.
      * \sa limit(), setLimit()
      */
     void limitChanged(int limit);
 
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Notifier signal for the \link ListContainersJob::showAll showAll\endlink property.
      * \sa showAll(), setShowAll
      */
     void showAllChanged(bool showAll);
 
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::showSize showSize\endlink property.
+     * \brief Notifier signal for the \link ListContainersJob::showSize showSize\endlink property.
      * \sa showSize(), setShowSize()
      */
     void showSizeChanged(bool showSize);

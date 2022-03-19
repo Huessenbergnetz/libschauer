@@ -19,7 +19,7 @@ class AbstractImagesModelPrivate;
  *
  * This uses ListImagesJob to get a list of images from the docker daemon.
  *
- * \sa ImageListModel
+ * See ImageListModel for a full implementation.
  */
 class SCHAUER_LIBRARY AbstractImagesModel : public AbstractBaseModel
 {
