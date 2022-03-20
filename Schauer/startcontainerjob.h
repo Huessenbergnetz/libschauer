@@ -18,7 +18,7 @@ class StartContainerJobPrivate;
  * \brief Starts a Docker container.
  *
  * Use this class to start a previously \link CreateContainerJob created\endlink container
- * identified by its \link StartContainer::id id\endlink.
+ * identified by its \link StartContainerJob::id id\endlink.
  *
  * \par API route
  * /containers/{\link StartContainerJob::id id\endlink}/stop

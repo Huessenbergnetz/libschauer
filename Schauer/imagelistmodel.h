@@ -32,6 +32,11 @@ public:
      */
     ~ImageListModel() override;
 
+    /*!
+     * \brief Roles used to access the model data.
+     *
+     * Mainly used to access the model data from QML.
+     */
     enum Roles : int {
         IdRole = Qt::UserRole + 1,  /**< The ID of the image. Accessor: id, Type: QString */
         ParentIdRole,               /**< The ID of an optional parent image. Accessor: parentId, Type: QString */

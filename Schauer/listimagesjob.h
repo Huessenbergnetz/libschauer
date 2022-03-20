@@ -24,7 +24,7 @@ class ListImagesJobPrivate;
  * \brief Queries the list of available images from the Docker daemon.
  *
  * Use this class to get a list of available images from the docker daemon.
- * There is also AbstractImagesModel to provide this information.
+ * There is also AbstractImageModel to provide this information.
  *
  * \par API route
  * /images/json
@@ -87,38 +87,38 @@ public:
     void start() override;
 
     /*!
-     * \brief Getter function for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Getter function for the \link ListImagesJob::showAll showAll\endlink property.
      * \sa setShowAll(), showAllChanged()
      */
     bool showAll() const;
 
     /*!
-     * \brief Setter function for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Setter function for the \link ListImagesJob::showAll showAll\endlink property.
      * \sa showAll(), showAllChanged()
      */
     void setShowAll(bool showAll);
 
     /*!
-     * \brief Getter function for the \link AbstractImagesModel::showDigests showDigests\endlink property.
+     * \brief Getter function for the \link ListImagesJob::showDigests showDigests\endlink property.
      * \sa setShowDigests(), showDigestsChanged()
      */
     bool showDigests() const;
 
     /*!
-     * \brief Setter function for the \link AbstractImagesModel::showDigests showDigests\endlink property.
+     * \brief Setter function for the \link ListImagesJob::showDigests showDigests\endlink property.
      * \sa showDigests(), showDigestsChanged()
      */
     void setShowDigests(bool showDigests);
 
 Q_SIGNALS:
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Notifier signal for the \link ListImagesJob::showAll showAll\endlink property.
      * \sa showAll(), setShowAll()
      */
     void showAllChanged(bool showAll);
 
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::showDigests showDigests\endlink property.
+     * \brief Notifier signal for the \link ListImagesJob::showDigests showDigests\endlink property.
      * \sa showDigests(), setShowDigests()
      */
     void showDigestsChanged(bool showDigests);
