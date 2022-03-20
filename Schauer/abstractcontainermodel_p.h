@@ -8,6 +8,7 @@
 
 #include "abstractcontainermodel.h"
 #include "abstractbasemodel_p.h"
+#include <QDateTime>
 
 namespace Schauer {
 
