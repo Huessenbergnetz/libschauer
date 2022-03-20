@@ -240,7 +240,7 @@ void JobPrivate::emitError(int errorCode, const QString &errorText)
 
 QString JobPrivate::buildUrlPath() const
 {
-    return QStringLiteral("/v1.40");
+    return QStringLiteral("/v") + QStringLiteral(DOCKER_API_VERSION);
 }
 
 QUrlQuery JobPrivate::buildUrlQuery() const
