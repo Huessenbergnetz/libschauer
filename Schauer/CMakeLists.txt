@@ -84,11 +84,11 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         ContainerListModel
         createcontainerjob.h
         CreateContainerJob
-        schauer_global.h
         getversionjob.h
         GetVersionJob
         imagelistmodel.h
         ImageListModel
+        job.h
         listcontainersjob.h
         ListContainersJob
         listimagesjob.h
@@ -99,6 +99,7 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         StopContainerJob
         removecontainerjob.h
         RemoveContainerJob
+        schauer_global.h
         versionlistmodel.h
         VersionListModel
 )
