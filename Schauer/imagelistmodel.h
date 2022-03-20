@@ -7,7 +7,7 @@
 #define SCHAUER_IMAGESLISTMODEL_H
 
 #include "schauer_global.h"
-#include "abstractimagesmodel.h"
+#include "abstractimagemodel.h"
 
 namespace Schauer {
 
@@ -18,7 +18,7 @@ class ImageListModelPrivate;
  * \brief List model providing available images.
  * \headerfile "" <Schauer/ImageListModel>
  */
-class SCHAUER_LIBRARY ImageListModel : public AbstractImagesModel
+class SCHAUER_LIBRARY ImageListModel : public AbstractImageModel
 {
     Q_OBJECT
 public:

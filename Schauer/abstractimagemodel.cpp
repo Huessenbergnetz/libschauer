@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#include "abstractimagesmodel_p.h"
+#include "abstractimagemodel_p.h"
 #include "listimagesjob.h"
 #include "logging.h"
 #include <QJsonDocument>
@@ -13,26 +13,26 @@
 
 using namespace Schauer;
 
-AbstractImagesModelPrivate::AbstractImagesModelPrivate(AbstractImagesModel *q)
+AbstractImageModelPrivate::AbstractImageModelPrivate(AbstractImageModel *q)
     : AbstractBaseModelPrivate(q)
 {
 
 }
 
-AbstractImagesModelPrivate::~AbstractImagesModelPrivate() = default;
+AbstractImageModelPrivate::~AbstractImageModelPrivate() = default;
 
-void AbstractImagesModelPrivate::setupJob()
+void AbstractImageModelPrivate::setupJob()
 {
-    Q_Q(AbstractImagesModel);
+    Q_Q(AbstractImageModel);
     auto _job = new ListImagesJob(q);
     _job->setShowAll(showAll);
     _job->setShowDigests(showDigests);
     job = _job;
 }
 
-bool AbstractImagesModelPrivate::loadFromJson(const QJsonDocument &json)
+bool AbstractImageModelPrivate::loadFromJson(const QJsonDocument &json)
 {
-    Q_Q(AbstractImagesModel);
+    Q_Q(AbstractImageModel);
 
     const QJsonArray imgs = json.array();
 
@@ -63,36 +63,36 @@ bool AbstractImagesModelPrivate::loadFromJson(const QJsonDocument &json)
     return true;
 }
 
-AbstractImagesModel::AbstractImagesModel(QObject *parent)
-    : AbstractBaseModel(* new AbstractImagesModelPrivate(this), parent)
+AbstractImageModel::AbstractImageModel(QObject *parent)
+    : AbstractBaseModel(* new AbstractImageModelPrivate(this), parent)
 {
 
 }
 
-AbstractImagesModel::AbstractImagesModel(AbstractImagesModelPrivate &dd, QObject *parent)
+AbstractImageModel::AbstractImageModel(AbstractImageModelPrivate &dd, QObject *parent)
     : AbstractBaseModel(dd, parent)
 {
 
 }
 
-AbstractImagesModel::~AbstractImagesModel() = default;
+AbstractImageModel::~AbstractImageModel() = default;
 
-int AbstractImagesModel::rowCount(const QModelIndex &parent) const
+int AbstractImageModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    Q_D(const AbstractImagesModel);
+    Q_D(const AbstractImageModel);
     return d->images.size();
 }
 
-bool AbstractImagesModel::showAll() const
+bool AbstractImageModel::showAll() const
 {
-    Q_D(const AbstractImagesModel);
+    Q_D(const AbstractImageModel);
     return d->showAll;
 }
 
-void AbstractImagesModel::setShowAll(bool showAll)
+void AbstractImageModel::setShowAll(bool showAll)
 {
-    Q_D(AbstractImagesModel);
+    Q_D(AbstractImageModel);
     if (d->showAll != showAll) {
         qCDebug(schCore) << "Changing \"schowAll\" from" << d->showAll << "to" << showAll;
         d->showAll = showAll;
@@ -100,15 +100,15 @@ void AbstractImagesModel::setShowAll(bool showAll)
     }
 }
 
-bool AbstractImagesModel::showDigests() const
+bool AbstractImageModel::showDigests() const
 {
-    Q_D(const AbstractImagesModel);
+    Q_D(const AbstractImageModel);
     return d->showDigests;
 }
 
-void AbstractImagesModel::setShowDigests(bool showDigests)
+void AbstractImageModel::setShowDigests(bool showDigests)
 {
-    Q_D(AbstractImagesModel);
+    Q_D(AbstractImageModel);
     if (d->showDigests != showDigests) {
         qCDebug(schCore) << "Changing \"showDigests\" from" << d->showDigests << "to" << showDigests;
         d->showDigests = showDigests;
@@ -116,14 +116,14 @@ void AbstractImagesModel::setShowDigests(bool showDigests)
     }
 }
 
-bool AbstractImagesModel::containsRepoTag(const QString &repo, const QString &tag) const
+bool AbstractImageModel::containsRepoTag(const QString &repo, const QString &tag) const
 {
     return containsRepoTag(QLatin1String(repo.toLatin1()), QLatin1String(tag.toLatin1()));
 }
 
-bool AbstractImagesModel::containsRepoTag(QLatin1String repo, QLatin1String tag) const
+bool AbstractImageModel::containsRepoTag(QLatin1String repo, QLatin1String tag) const
 {
-    Q_D(const AbstractImagesModel);
+    Q_D(const AbstractImageModel);
     if (d->images.empty() || repo.isEmpty()) {
         return false;
     }
@@ -154,9 +154,9 @@ bool AbstractImagesModel::containsRepoTag(QLatin1String repo, QLatin1String tag)
     return false;
 }
 
-void AbstractImagesModel::clear()
+void AbstractImageModel::clear()
 {
-    Q_D(AbstractImagesModel);
+    Q_D(AbstractImageModel);
     if (!d->images.empty()) {
 
         beginRemoveRows(QModelIndex(), 0, d->images.size() - 1);
@@ -167,4 +167,4 @@ void AbstractImagesModel::clear()
     }
 }
 
-#include "moc_abstractimagesmodel.cpp"
+#include "moc_abstractimagemodel.cpp"

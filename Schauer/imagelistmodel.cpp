@@ -9,7 +9,7 @@
 using namespace Schauer;
 
 ImageListModelPrivate::ImageListModelPrivate(ImageListModel *q)
-    : AbstractImagesModelPrivate(q)
+    : AbstractImageModelPrivate(q)
 {
 
 }
@@ -17,7 +17,7 @@ ImageListModelPrivate::ImageListModelPrivate(ImageListModel *q)
 ImageListModelPrivate::~ImageListModelPrivate() = default;
 
 ImageListModel::ImageListModel(QObject *parent)
-    : AbstractImagesModel(* new ImageListModelPrivate(this), parent)
+    : AbstractImageModel(* new ImageListModelPrivate(this), parent)
 {
 
 }

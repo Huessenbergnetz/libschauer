@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef SCHAUER_ABSTRACTIMAGESMODEL_P_H
-#define SCHAUER_ABSTRACTIMAGESMODEL_P_H
+#ifndef SCHAUER_ABSTRACTIMAGEMODEL_P_H
+#define SCHAUER_ABSTRACTIMAGEMODEL_P_H
 
-#include "abstractimagesmodel.h"
+#include "abstractimagemodel.h"
 #include "abstractbasemodel_p.h"
 #include <QDateTime>
 #include <QMap>
@@ -72,12 +72,12 @@ struct ImageModelItem {
     ImageModelItem& operator=(ImageModelItem &&other) = default;
 };
 
-class AbstractImagesModelPrivate : public AbstractBaseModelPrivate
+class AbstractImageModelPrivate : public AbstractBaseModelPrivate
 {
 public:
-    AbstractImagesModelPrivate(AbstractImagesModel *q);
+    AbstractImageModelPrivate(AbstractImageModel *q);
 
-    ~AbstractImagesModelPrivate();
+    ~AbstractImageModelPrivate();
 
     void setupJob() override;
     bool loadFromJson(const QJsonDocument &json) override;
@@ -87,10 +87,10 @@ public:
     bool showDigests = false;
 
 private:
-    Q_DISABLE_COPY(AbstractImagesModelPrivate)
-    Q_DECLARE_PUBLIC(AbstractImagesModel)
+    Q_DISABLE_COPY(AbstractImageModelPrivate)
+    Q_DECLARE_PUBLIC(AbstractImageModel)
 };
 
 }
 
-#endif // SCHAUER_ABSTRACTIMAGESMODEL_P_H
+#endif // SCHAUER_ABSTRACTIMAGEMODEL_P_H

@@ -42,7 +42,7 @@ void ModelTest::testImageListModel()
     new QAbstractItemModelTester(model, this);
 
     // test showAll property
-    QSignalSpy showAllSpy(model, &AbstractImagesModel::showAllChanged);
+    QSignalSpy showAllSpy(model, &AbstractImageModel::showAllChanged);
     QVERIFY(!model->showAll());
     model->setShowAll(true);
     QCOMPARE(showAllSpy.count(), 1);
@@ -51,7 +51,7 @@ void ModelTest::testImageListModel()
     QVERIFY(model->showAll());
 
     // test showDigests property
-    QSignalSpy showDigestsSpy(model, &AbstractImagesModel::showDigestsChanged);
+    QSignalSpy showDigestsSpy(model, &AbstractImageModel::showDigestsChanged);
     QVERIFY(!model->showDigests());
     model->setShowDigests(true);
     QCOMPARE(showDigestsSpy.count(), 1);

@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef SCHAUER_ABSTRACTIMAGESMODEL_H
-#define SCHAUER_ABSTRACTIMAGESMODEL_H
+#ifndef SCHAUER_ABSTRACTIMAGEMODEL_H
+#define SCHAUER_ABSTRACTIMAGEMODEL_H
 
 #include "schauer_global.h"
 #include "abstractbasemodel.h"
 
 namespace Schauer {
 
-class AbstractImagesModelPrivate;
+class AbstractImageModelPrivate;
 
 /*!
  * \ingroup data-models
@@ -21,7 +21,7 @@ class AbstractImagesModelPrivate;
  *
  * See ImageListModel for a full implementation.
  */
-class SCHAUER_LIBRARY AbstractImagesModel : public AbstractBaseModel
+class SCHAUER_LIBRARY AbstractImageModel : public AbstractBaseModel
 {
     Q_OBJECT
     /*!
@@ -52,37 +52,37 @@ class SCHAUER_LIBRARY AbstractImagesModel : public AbstractBaseModel
     Q_PROPERTY(bool showDigests READ showDigests WRITE setShowDigests NOTIFY showDigestsChanged)
 public:
     /*!
-     * \brief Constructs a new %AbstractImagesModel with the given \a parent.
+     * \brief Constructs a new %AbstractImageModel with the given \a parent.
      */
-    explicit AbstractImagesModel(QObject *parent = nullptr);
+    explicit AbstractImageModel(QObject *parent = nullptr);
 
     /*!
-     * \brief Destroys the %AbstractImagesModel.
+     * \brief Destroys the %AbstractImageModel.
      */
-    ~AbstractImagesModel() override;
+    ~AbstractImageModel() override;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     /*!
-     * \brief Getter function for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Getter function for the \link AbstractImageModel::showAll showAll\endlink property.
      * \sa setShowAll(), showAllChanged()
      */
     bool showAll() const;
 
     /*!
-     * \brief Setter function for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Setter function for the \link AbstractImageModel::showAll showAll\endlink property.
      * \sa showAll(), showAllChanged()
      */
     void setShowAll(bool showAll);
 
     /*!
-     * \brief Getter function for the \link AbstractImagesModel::showDigests showDigests\endlink property.
+     * \brief Getter function for the \link AbstractImageModel::showDigests showDigests\endlink property.
      * \sa setShowDigests(), showDigestsChanged()
      */
     bool showDigests() const;
 
     /*!
-     * \brief Setter function for the \link AbstractImagesModel::showDigests showDigests\endlink property.
+     * \brief Setter function for the \link AbstractImageModel::showDigests showDigests\endlink property.
      * \sa showDigests(), showDigestsChanged()
      */
     void setShowDigests(bool showDigests);
@@ -99,27 +99,27 @@ public:
 
 Q_SIGNALS:
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::showAll showAll\endlink property.
+     * \brief Notifier signal for the \link AbstractImageModel::showAll showAll\endlink property.
      * \sa showAll(), setShowAll()
      */
     void showAllChanged(bool showAll);
 
     /*!
-     * \brief Notifier signal for the \link AbstractImagesModel::showDigests showDigests\endlink property.
+     * \brief Notifier signal for the \link AbstractImageModel::showDigests showDigests\endlink property.
      * \sa showDigests(), setShowDigests()
      */
     void showDigestsChanged(bool schowDigests);
 
 protected:
-    AbstractImagesModel(AbstractImagesModelPrivate &dd, QObject *parent = nullptr);
+    AbstractImageModel(AbstractImageModelPrivate &dd, QObject *parent = nullptr);
 
     void clear() override;
 
 private:
-    Q_DECLARE_PRIVATE_D(s_ptr, AbstractImagesModel)
-    Q_DISABLE_COPY(AbstractImagesModel)
+    Q_DECLARE_PRIVATE_D(s_ptr, AbstractImageModel)
+    Q_DISABLE_COPY(AbstractImageModel)
 };
 
 }
 
-#endif // SCHAUER_ABSTRACTIMAGESMODEL_H
+#endif // SCHAUER_ABSTRACTIMAGEMODEL_H

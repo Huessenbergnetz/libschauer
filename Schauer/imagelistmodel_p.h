@@ -7,11 +7,11 @@
 #define SCHAUER_IMAGESLISTMODEL_P_H
 
 #include "imagelistmodel.h"
-#include "abstractimagesmodel_p.h"
+#include "abstractimagemodel_p.h"
 
 namespace Schauer {
 
-class ImageListModelPrivate : public AbstractImagesModelPrivate
+class ImageListModelPrivate : public AbstractImageModelPrivate
 {
 public:
     ImageListModelPrivate(ImageListModel *q);

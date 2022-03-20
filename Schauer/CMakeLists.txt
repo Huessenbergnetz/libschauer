@@ -25,9 +25,9 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         abstractcontainermodel.cpp
         abstractcontainermodel.h
         abstractcontainermodel_p.h
-        abstractimagesmodel.cpp
-        abstractimagesmodel.h
-        abstractimagesmodel_p.h
+        abstractimagemodel.cpp
+        abstractimagemodel.h
+        abstractimagemodel_p.h
         abstractnamfactory.cpp
         abstractnamfactory.h
         abstractversionmodel.cpp
@@ -76,7 +76,7 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         abstractcontainermodel.h
         abstractconfiguration.h
         AbstractConfiguration
-        abstractimagesmodel.h
+        abstractimagemodel.h
         abstractnamfactory.h
         AbstractNamFactory
         abstractversionmodel.h
