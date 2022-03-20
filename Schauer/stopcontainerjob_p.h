@@ -27,7 +27,7 @@ public:
     bool checkInput() override;
 
     QString id;
-    int timeout;
+    int timeout = 0;
 
 private:
     Q_DECLARE_PUBLIC(StopContainerJob)
