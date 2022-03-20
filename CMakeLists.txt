@@ -9,8 +9,8 @@ project(libschauer
         DESCRIPTION "Qt based library to access the Docker HTTP API."
         LANGUAGES CXX)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} 5.6.0 REQUIRED COMPONENTS Core Network)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} 5.6.0 REQUIRED COMPONENTS Core Network LinguistTools)
 
 # Include our cmake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
@@ -45,6 +45,8 @@ option(WITH_KDE "Use the original KJobs implementation of KDE Frameworks" OFF)
 option(WITH_TESTS "Build the tests" OFF)
 option(WITH_API_TESTS "Build API tests that require a running docker instance" OFF)
 
+set(LIBSCHAUER_I18NDIR "${CMAKE_INSTALL_DATADIR}/libSchauerQt${QT_VERSION_MAJOR}/translations" CACHE PATH "Directory to install translations")
+
 if (WITH_TESTS)
     enable_testing()
 endif (WITH_TESTS)
@@ -77,6 +79,7 @@ install(EXPORT SchauerTargets
 )
 
 add_subdirectory(Schauer)
+add_subdirectory(translations)
 if (WITH_TESTS)
     add_subdirectory(tests)
 endif (WITH_TESTS)
