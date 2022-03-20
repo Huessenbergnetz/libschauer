@@ -33,16 +33,16 @@ public:
     ~ImageListModel() override;
 
     enum Roles : int {
-        IdRole = Qt::UserRole + 1,
-        ParentIdRole,
-        RepoTagsRole,
-        RepoDigestsRole,
-        CreatedRole,
-        SizeRole,
-        VirtualSizeRole,
-        SharedSizeRole,
-        LabelsRole,
-        ContainersRole
+        IdRole = Qt::UserRole + 1,  /**< The ID of the image. Accessor: id, Type: QString */
+        ParentIdRole,               /**< The ID of an optional parent image. Accessor: parentId, Type: QString */
+        RepoTagsRole,               /**< Tags used to identify the image. Accessor: repoTags, Type: QStringList */
+        RepoDigestsRole,            /**< Digests used to identify the image. Accessor: repoDigests, Type: QStringList */
+        CreatedRole,                /**< Date and time the image has been created. Accessor: created, Type: QDateTime */
+        SizeRole,                   /**< The size of the image. Accessor: size, Type: qint64 */
+        VirtualSizeRole,            /**< The virtual size of the image. Accessor: virtualSize, Type: qint64 */
+        SharedSizeRole,             /**< The shared size of the image. Accessor: sharedSize, Type: qint64 */
+        LabelsRole,                 /**< Used defind key/value pairs. Accessor: labels, Type: QMap<QString, QString> */
+        ContainersRole              /**< Number of containers created from this image. Accessor: containers, Type: int */
     };
 
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
