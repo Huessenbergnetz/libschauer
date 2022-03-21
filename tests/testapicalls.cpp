@@ -323,7 +323,7 @@ void ApiCallsTest::testContainerOperationsAsync()
         QSignalSpy failedSpy(stop, &Job::failed);
         stop->start();
         QVERIFY(finishedSpy.wait());
-        QCOMPARE(start->error(), 0);
+        QCOMPARE(stop->error(), 0);
         QCOMPARE(finishedSpy.count(), 1);
         QCOMPARE(finishedSpy.at(0).at(0).value<StopContainerJob*>(), stop);
         QCOMPARE(resultSpy.count(), 1);
