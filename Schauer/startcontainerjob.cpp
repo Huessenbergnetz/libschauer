@@ -22,7 +22,8 @@ StartContainerJobPrivate::~StartContainerJobPrivate() = default;
 
 QString StartContainerJobPrivate::buildUrlPath() const
 {
-    const QString path = JobPrivate::buildUrlPath() + QLatin1String("/containers/") + id + QLatin1String("/start");
+    const QString _id = id.startsWith(QLatin1Char('/')) ? id.mid(1) : id;
+    const QString path = JobPrivate::buildUrlPath() + QLatin1String("/containers/") + _id + QLatin1String("/start");
     return path;
 }
 
