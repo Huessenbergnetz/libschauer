@@ -55,7 +55,7 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         listimagesjob.h
         listimagesjob_p.h
         logging.h
-        schauer_global.h
+        schauer_exports.h
         startcontainerjob.cpp
         startcontainerjob.h
         startcontainerjob_p.h
@@ -99,7 +99,7 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         StopContainerJob
         removecontainerjob.h
         RemoveContainerJob
-        schauer_global.h
+        schauer_exports.h
         versionlistmodel.h
         VersionListModel
 )

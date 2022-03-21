@@ -6,7 +6,7 @@
 #ifndef SCHAUER_JOB_H
 #define SCHAUER_JOB_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #if defined(SCHAUER_WITH_KDE)
 #include <KF5/KCoreAddons/KJob>
 #else

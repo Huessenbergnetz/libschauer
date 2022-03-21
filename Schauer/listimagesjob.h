@@ -6,7 +6,7 @@
 #ifndef SCHAUER_LISTIMAGESJOB_H
 #define SCHAUER_LISTIMAGESJOB_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include "job.h"
 
 namespace Schauer {

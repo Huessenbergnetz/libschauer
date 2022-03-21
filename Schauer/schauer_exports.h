@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef SCHAUER_GLOBAL_H
-#define SCHAUER_GLOBAL_H
+#ifndef SCHAUER_EXPORTS_H
+#define SCHAUER_EXPORTS_H
 
 #include <QtCore/QtGlobal>
 
@@ -14,4 +14,4 @@
 #  define SCHAUER_LIBRARY Q_DECL_IMPORT
 #endif
 
-#endif // SCHAUER_GLOBAL_H
+#endif // SCHAUER_EXPORTS_H

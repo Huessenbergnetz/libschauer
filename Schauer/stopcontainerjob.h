@@ -6,7 +6,7 @@
 #ifndef SCHAUER_STOPCONTAINERJOB_H
 #define SCHAUER_STOPCONTAINERJOB_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include "job.h"
 
 namespace Schauer {

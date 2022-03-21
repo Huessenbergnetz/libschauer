@@ -6,7 +6,7 @@
 #ifndef SCHAUER_ABSTRACTVERSIONMODEL_H
 #define SCHAUER_ABSTRACTVERSIONMODEL_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include "abstractbasemodel.h"
 #include <QDateTime>
 

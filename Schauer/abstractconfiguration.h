@@ -6,7 +6,7 @@
 #ifndef SCHAUER_ABSTRACTCONFIGURATION_H
 #define SCHAUER_ABSTRACTCONFIGURATION_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include <QObject>
 
 namespace Schauer {

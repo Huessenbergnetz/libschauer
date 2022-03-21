@@ -6,7 +6,7 @@
 #ifndef SCHAUER_IMAGESLISTMODEL_H
 #define SCHAUER_IMAGESLISTMODEL_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include "abstractimagemodel.h"
 
 namespace Schauer {

@@ -6,7 +6,7 @@
 #ifndef SCHAUER_ABSTRACTNAMFACTORY_H
 #define SCHAUER_ABSTRACTNAMFACTORY_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 
 class QObject;
 class QNetworkAccessManager;

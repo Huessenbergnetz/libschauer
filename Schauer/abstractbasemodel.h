@@ -6,7 +6,7 @@
 #ifndef SCHAUER_ABSTRACTBASEMODEL_H
 #define SCHAUER_ABSTRACTBASEMODEL_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include "abstractconfiguration.h"
 #include <QAbstractItemModel>
 #include <memory>

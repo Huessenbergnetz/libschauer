@@ -6,7 +6,7 @@
 #ifndef SCHAUER_ABSTRACTCONTAINERMODEL_H
 #define SCHAUER_ABSTRACTCONTAINERMODEL_H
 
-#include "schauer_global.h"
+#include "schauer_exports.h"
 #include "abstractbasemodel.h"
 
 namespace Schauer {
