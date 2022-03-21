@@ -227,6 +227,11 @@ void ApiCallsTest::testContainerOperationsSync()
     start->setId(containerId);
     QVERIFY(start->exec());
 
+    // stop container
+    auto stop = new StopContainerJob(this);
+    stop->setId(containerId);
+    QVERIFY(stop->exec());
+
     // remove the container
     auto remove = new RemoveContainerJob(this);
     remove->setId(containerId);
@@ -303,6 +308,26 @@ void ApiCallsTest::testContainerOperationsAsync()
         QCOMPARE(finishedSpy.at(0).at(0).value<StartContainerJob*>(), start);
         QCOMPARE(resultSpy.count(), 1);
         QCOMPARE(resultSpy.at(0).at(0).value<StartContainerJob*>(), start);
+        QCOMPARE(failedSpy.count(), 0);
+        QCOMPARE(succeededSpy.count(), 1);
+        QVERIFY(succeededSpy.at(0).at(0).toJsonDocument().isEmpty());
+    }
+
+    // stop container
+    auto stop = new StopContainerJob(this);
+    stop->setId(containerId);
+    {
+        QSignalSpy finishedSpy(stop, &SJob::finished);
+        QSignalSpy resultSpy(stop, &SJob::result);
+        QSignalSpy succeededSpy(stop, &Job::succeeded);
+        QSignalSpy failedSpy(stop, &Job::failed);
+        stop->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(start->error(), 0);
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<StopContainerJob*>(), stop);
+        QCOMPARE(resultSpy.count(), 1);
+        QCOMPARE(resultSpy.at(0).at(0).value<StopContainerJob*>(), stop);
         QCOMPARE(failedSpy.count(), 0);
         QCOMPARE(succeededSpy.count(), 1);
         QVERIFY(succeededSpy.at(0).at(0).toJsonDocument().isEmpty());
