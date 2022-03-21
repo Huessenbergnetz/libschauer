@@ -40,7 +40,7 @@ void StopContainerJobPrivate::emitDescription()
 
     //: Job description title
     //% "Stopping container with ID %1"
-    const QString _title = qtTrId("libschauer-job-desc-sto-container-title").arg(id);
+    const QString _title = qtTrId("libschauer-job-desc-stop-container-title").arg(id);
 
     Q_EMIT q->description(q, _title);
 }

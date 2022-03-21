@@ -57,7 +57,7 @@ void CreateContainerJobPrivate::emitDescription()
     } else {
         //: Job description title, %1 will be replaced by the container name
         //% "Creating new container %1"
-        _title = qtTrId("libschauer-job-desc-create-container-title-with-name");
+        _title = qtTrId("libschauer-job-desc-create-container-title-with-name").arg(name);
     }
 
     //: Job description field name
