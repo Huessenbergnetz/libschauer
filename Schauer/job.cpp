@@ -316,6 +316,13 @@ void Job::sendRequest()
     }
 #endif
 
+    nr.setMaximumRedirectsAllowed(1);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
+    nr.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::SameOriginRedirectPolicy);
+#else
+    nr.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+#endif
+
     switch (d->expectedContentType) {
     case ExpectedContentType::JsonObject:
     case ExpectedContentType::JsonArray:
