@@ -74,7 +74,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/SchauerQt${QT_VERSION_MAJOR}Config.cma
 install(EXPORT SchauerTargets
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SchauerQt${QT_VERSION_MAJOR}/
     FILE SchauerQt${QT_VERSION_MAJOR}Targets.cmake
-    NAMESPACE Schauer::
+    NAMESPACE SchauerQt${QT_VERSION_MAJOR}::
     COMPONENT development
 )
 
