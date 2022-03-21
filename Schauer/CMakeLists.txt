@@ -43,6 +43,8 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         getversionjob.h
         getversionjob_p.h
         imagelistmodel.cpp
+        global.cpp
+        global.h
         imagelistmodel.h
         imagelistmodel_p.h
         job.cpp
@@ -86,6 +88,8 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         CreateContainerJob
         getversionjob.h
         GetVersionJob
+        global.h
+        Global
         imagelistmodel.h
         ImageListModel
         job.h

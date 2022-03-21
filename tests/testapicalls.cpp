@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "testconfig.h"
+#include <Schauer/Global>
 #include <Schauer/GetVersionJob>
 #include <Schauer/VersionListModel>
 #include <Schauer/ListImagesJob>

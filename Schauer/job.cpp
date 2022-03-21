@@ -6,11 +6,10 @@
 #include "job_p.h"
 #include "logging.h"
 #include "abstractnamfactory.h"
+#include "global.h"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QReadWriteLock>
-#include <QGlobalStatic>
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonValue>
@@ -18,88 +17,7 @@
 #include <QTimer>
 #endif
 
-#if defined(QT_DEBUG)
-Q_LOGGING_CATEGORY(schCore, "schauer.core")
-#else
-Q_LOGGING_CATEGORY(schCore, "schauer.core", QtInfoMsg)
-#endif
-
 using namespace Schauer;
-
-class DefaultValues
-{
-public:
-    mutable QReadWriteLock lock;
-
-    AbstractConfiguration *configuration() const
-    {
-        return m_configuration;
-    }
-
-    void setConfiguration(AbstractConfiguration *config)
-    {
-        m_configuration = config;
-    }
-
-    AbstractNamFactory *namFactory() const
-    {
-        return m_namFactory;
-    }
-
-    void setNamFactory(AbstractNamFactory *factory)
-    {
-        m_namFactory = factory;
-    }
-
-private:
-    AbstractConfiguration *m_configuration = nullptr;
-    AbstractNamFactory *m_namFactory = nullptr;
-};
-Q_GLOBAL_STATIC(DefaultValues, defVals)
-
-AbstractConfiguration *Schauer::defaultConfiguration()
-{
-    const DefaultValues *defs = defVals();
-    Q_ASSERT(defs);
-
-    defs->lock.lockForRead();
-    AbstractConfiguration *config = defs->configuration();
-    defs->lock.unlock();
-
-    return config;
-}
-
-void Schauer::setDefaultConfiguration(AbstractConfiguration *configuration)
-{
-    DefaultValues *defs = defVals();
-    Q_ASSERT(defs);
-
-    QWriteLocker locker(&defs->lock);
-    qCDebug(schCore) << "Setting defaultConfiguration to" << configuration;
-    defs->setConfiguration(configuration);
-}
-
-AbstractNamFactory *Schauer::networkAccessManagerFactory()
-{
-    const DefaultValues *defs = defVals();
-    Q_ASSERT(defs);
-
-    defs->lock.lockForRead();
-    AbstractNamFactory *namf = defs->namFactory();
-    defs->lock.unlock();
-
-    return namf;
-}
-
-void Schauer::setNetworkAccessManagerFactory(AbstractNamFactory *factory)
-{
-    DefaultValues *defs = defVals();
-    Q_ASSERT(defs);
-
-    QWriteLocker locker(&defs->lock);
-    qCDebug(schCore) << "Setting networkAccessManagerFactory to" << factory;
-    defs->setNamFactory(factory);
-}
 
 JobPrivate::JobPrivate(Job *q)
     : q_ptr(q)

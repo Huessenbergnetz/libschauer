@@ -1,0 +1,45 @@
+/*
+ * SPDX-FileCopyrightText: (C) 2021-2022 Matthias Fehring / www.huessenbergnetz.de
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
+#ifndef SCHAUER_GLOBAL_H
+#define SCHAUER_GLOBAL_H
+
+#include "schauer_exports.h"
+
+/*!
+ * \brief The root namespace for libschauer.
+ */
+namespace Schauer {
+
+class AbstractConfiguration;
+class AbstractNamFactory;
+
+/*!
+ * \brief Sets a pointer to a global default \a configuration.
+ * \sa Schauer::defaultConfiguration()
+ */
+SCHAUER_LIBRARY void setDefaultConfiguration(AbstractConfiguration *configuration);
+
+/*!
+ * \brief Returns a pointer to a global default configuration.
+ * \sa Schauer::setDefaultConfiguration()
+ */
+SCHAUER_LIBRARY AbstractConfiguration* defaultConfiguration();
+
+/*!
+ * \brief Sets a pointer to a global network access manager \a factory.
+ * \sa Schauer::networkAccessManagerFactory()
+ */
+SCHAUER_LIBRARY void setNetworkAccessManagerFactory(AbstractNamFactory *factory);
+
+/*!
+ * \brief Returns a pointer to a global network access manager factory.
+ * \sa Schauer::setNetworkAccessManagerFactory()
+ */
+SCHAUER_LIBRARY AbstractNamFactory* networkAccessManagerFactory();
+
+}
+
+#endif // SCHAUER_GLOBAL_H

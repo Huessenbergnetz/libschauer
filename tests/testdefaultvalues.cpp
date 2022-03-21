@@ -5,7 +5,7 @@
 
 #include "testconfig.h"
 #include "testnamfactory.h"
-#include <Schauer/job.h>
+#include <Schauer/Global>
 
 #include <QObject>
 #include <QTest>
