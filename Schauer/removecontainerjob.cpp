@@ -60,7 +60,7 @@ bool RemoveContainerJobPrivate::checkInput()
 
     if (id.isEmpty()) {
         //: Error message if container id is missing when tryping to remove a container
-        //% "Can n ot remove a container without a valid container ID."
+        //% "Can not remove a container without a valid container ID."
         emitError(InvalidInput, qtTrId("libschauer-error-remove-container-missing-id"));
         qCCritical(schCore) << "Missing container ID when trying to remove a container.";
         return false;
