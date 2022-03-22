@@ -69,10 +69,6 @@ public:
 
     void setCmd(const QStringList &cmd);
 
-    void addCmd(const QString &cmd);
-
-    void removeCmd(const QString &cmd);
-
     bool privileged() const;
 
     void setPrivileged(bool privileged);

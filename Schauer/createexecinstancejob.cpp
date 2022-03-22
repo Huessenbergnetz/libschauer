@@ -249,22 +249,6 @@ void CreateExecInstanceJob::setCmd(const QStringList &cmd)
     }
 }
 
-void CreateExecInstanceJob::addCmd(const QString &cmd)
-{
-    Q_D(CreateExecInstanceJob);
-    qCDebug(schCore) << "Adding" << cmd << "to the list of commands to execute.";
-    d->cmd.append(cmd);
-    Q_EMIT cmdChanged(this->cmd());
-}
-
-void CreateExecInstanceJob::removeCmd(const QString &cmd)
-{
-    Q_D(CreateExecInstanceJob);
-    qCDebug(schCore) << "Removing" << cmd << "from the list of commands to execute.";
-    d->cmd.removeAll(cmd);
-    Q_EMIT cmdChanged(this->cmd());
-}
-
 bool CreateExecInstanceJob::privileged() const
 {
     Q_D(const CreateExecInstanceJob);
