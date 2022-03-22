@@ -119,6 +119,12 @@ void StartExecInstanceJob::setDetach(bool detach)
 bool StartExecInstanceJob::tty() const
 {
     Q_D(const StartExecInstanceJob);
+    return d->tty;
+}
+
+void StartExecInstanceJob::setTty(bool tty)
+{
+    Q_D(StartExecInstanceJob);
     if (d->tty != tty) {
         qCDebug(schCore) << "Changing \"tty\" from" << d->tty << "to" << tty;
         d->tty = tty;
