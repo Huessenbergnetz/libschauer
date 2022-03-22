@@ -64,6 +64,9 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         startcontainerjob.cpp
         startcontainerjob.h
         startcontainerjob_p.h
+        startexecinstancejob.cpp
+        startexecinstancejob.h
+        startexecinstancejob_p.h
         stopcontainerjob.cpp
         stopcontainerjob.h
         stopcontainerjob_p.h
@@ -104,6 +107,8 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         ListImagesJob
         startcontainerjob.h
         StartContainerJob
+        startexecinstancejob.h
+        StartExecInstanceJob
         stopcontainerjob.h
         StopContainerJob
         removecontainerjob.h
