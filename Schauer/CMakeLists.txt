@@ -39,6 +39,9 @@ target_sources(SchauerQt${QT_VERSION_MAJOR}
         createcontainerjob.cpp
         createcontainerjob.h
         createcontainerjob_p.h
+        createexecinstancejob.cpp
+        createexecinstancejob.h
+        createexecinstancejob_p.h
         getversionjob.cpp
         getversionjob.h
         getversionjob_p.h
@@ -86,6 +89,8 @@ set_property(TARGET SchauerQt${QT_VERSION_MAJOR}
         ContainerListModel
         createcontainerjob.h
         CreateContainerJob
+        createexecinstancejob.h
+        CreateExecInstanceJob
         getversionjob.h
         GetVersionJob
         global.h
