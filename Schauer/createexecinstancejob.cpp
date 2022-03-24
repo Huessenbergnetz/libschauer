@@ -225,6 +225,12 @@ void CreateExecInstanceJob::addEnv(const QString &env)
     Q_EMIT envChanged(this->env());
 }
 
+void CreateExecInstanceJob::addEnv(const QString &key, const QString &value)
+{
+    const QString env = key + QLatin1Char('=') + value;
+    addEnv(env);
+}
+
 void CreateExecInstanceJob::removeEnv(const QString &env)
 {
     Q_D(CreateExecInstanceJob);

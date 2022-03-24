@@ -63,6 +63,8 @@ public:
 
     void addEnv(const QString &env);
 
+    void addEnv(const QString &key, const QString &value);
+
     void removeEnv(const QString &env);
 
     QStringList cmd() const;
