@@ -147,6 +147,8 @@ target_link_libraries(SchauerQt${QT_VERSION_MAJOR}
         Qt${QT_VERSION_MAJOR}::Network
 )
 
+GNUInstallDirs_get_absolute_install_dir(LIBSCHAUER_ABS_I18NDIR LIBSCHAUER_I18NDIR)
+
 target_compile_definitions(SchauerQt${QT_VERSION_MAJOR}
     PRIVATE
         QT_NO_KEYWORDS
@@ -160,6 +162,7 @@ target_compile_definitions(SchauerQt${QT_VERSION_MAJOR}
         QT_USE_FAST_OPERATOR_PLUS
         QT_DISABLE_DEPRECATED_BEFORE=0x050500
         SCHAUER_VERSION="${PROJECT_VERSION}"
+        SCHAUER_I18NDIR="${LIBSCHAUER_ABS_I18NDIR}"
         DOCKER_API_VERSION="${DOCKER_API_VERSION}"
 )
 

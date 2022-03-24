@@ -7,6 +7,7 @@
 #define SCHAUER_GLOBAL_H
 
 #include "schauer_exports.h"
+#include <QLocale>
 
 /*!
  * \brief The root namespace for libschauer.
@@ -39,6 +40,13 @@ SCHAUER_LIBRARY void setNetworkAccessManagerFactory(AbstractNamFactory *factory)
  * \sa Schauer::setNetworkAccessManagerFactory()
  */
 SCHAUER_LIBRARY AbstractNamFactory* networkAccessManagerFactory();
+
+/*!
+ * \brief Load and install the translations for libschauer.
+ *
+ * Returns \c true on success, otherwise \c false.
+ */
+SCHAUER_LIBRARY bool loadTranslations(const QLocale &locale = QLocale());
 
 }
 

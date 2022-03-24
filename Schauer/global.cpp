@@ -8,6 +8,8 @@
 #include <QGlobalStatic>
 #include <QWriteLocker>
 #include <QReadWriteLock>
+#include <QTranslator>
+#include <QCoreApplication>
 
 #if defined(QT_DEBUG)
 Q_LOGGING_CATEGORY(schCore, "schauer.core")
@@ -90,4 +92,20 @@ void Schauer::setNetworkAccessManagerFactory(AbstractNamFactory *factory)
     QWriteLocker locker(&defs->lock);
     qCDebug(schCore) << "Setting networkAccessManagerFactory to" << factory;
     defs->setNamFactory(factory);
+}
+
+bool Schauer::loadTranslations(const QLocale &locale)
+{
+    auto t = new QTranslator(QCoreApplication::instance());
+    if (t->load(locale, QStringLiteral("libschauer"), QStringLiteral("_"), QStringLiteral(SCHAUER_I18NDIR))) {
+        if (QCoreApplication::installTranslator(t)) {
+            return true;
+        } else {
+            qCWarning(schCore) << "Failed to install translator for libschauer translations for locale" << locale;
+            return false;
+        }
+    } else {
+        qCWarning(schCore) << "Failed to load translations for libschauer for locale" << locale;
+        return false;
+    }
 }
