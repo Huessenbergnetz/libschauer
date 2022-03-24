@@ -19,6 +19,8 @@
 #include <Schauer/StopContainerJob>
 #include <Schauer/RemoveContainerJob>
 #include <Schauer/ContainerListModel>
+#include <Schauer/CreateExecInstanceJob>
+#include <Schauer/StartExecInstanceJob>
 
 using namespace Schauer;
 
@@ -175,8 +177,8 @@ void ApiCallsTest::testImageListModelSync()
     auto model = new ImageListModel(this);
     QVERIFY(model->load(AbstractBaseModel::LoadSync));
     QVERIFY(model->rowCount() > 0);
-    QVERIFY(model->containsRepoTag(QLatin1String("hello-world")));
-    QVERIFY(model->containsRepoTag(QLatin1String("hello-world"), QLatin1String("latest")));
+    QVERIFY(model->containsRepoTag(QLatin1String("nginx")));
+    QVERIFY(model->containsRepoTag(QLatin1String("nginx"), QLatin1String("latest")));
     QVERIFY(!model->containsRepoTag(QLatin1String("dummer-schiss")));
     QVERIFY(!model->containsRepoTag(QLatin1String("dummer-schiss"), QLatin1String("latest")));
 }
@@ -193,13 +195,17 @@ void ApiCallsTest::testImageListModelAsync()
     QCOMPARE(isLoadingSpy.at(0).at(0).toBool(), true);
     QCOMPARE(isLoadingSpy.at(1).at(0).toBool(), false);
     QVERIFY(model->rowCount() > 0);
+    QVERIFY(model->containsRepoTag(QLatin1String("nginx")));
+    QVERIFY(model->containsRepoTag(QLatin1String("nginx"), QLatin1String("latest")));
+    QVERIFY(!model->containsRepoTag(QLatin1String("dummer-schiss")));
+    QVERIFY(!model->containsRepoTag(QLatin1String("dummer-schiss"), QLatin1String("latest")));
 }
 
 void ApiCallsTest::testContainerOperationsSync()
 {
     const QString containerName = QStringLiteral("/my-little-container-sync");
     QVariantHash containerConfig;
-    containerConfig.insert(QStringLiteral("Image"), QStringLiteral("hello-world:latest"));
+    containerConfig.insert(QStringLiteral("Image"), QStringLiteral("nginx:latest"));
 
     // create a new container
     auto create = new CreateContainerJob(this);
@@ -218,7 +224,7 @@ void ApiCallsTest::testContainerOperationsSync()
     QVERIFY(!model->contains(QLatin1String("/ahsdfashdf")));
     QVERIFY(!model->contains(QLatin1String("adasdf")));
     QVERIFY(!model->contains(QLatin1String()));
-    QVERIFY(model->containsImage(QLatin1String("hello-world:latest")));
+    QVERIFY(model->containsImage(QLatin1String("nginx:latest")));
     QVERIFY(!model->containsImage(QLatin1String("dummer:schiss")));
     QVERIFY(!model->containsImage(QLatin1String()));
 
@@ -226,6 +232,19 @@ void ApiCallsTest::testContainerOperationsSync()
     auto start = new StartContainerJob(this);
     start->setId(containerId);
     QVERIFY(start->exec());
+
+    // execute command inside container
+    auto execCreate = new CreateExecInstanceJob(this);
+    execCreate->setId(containerId);
+    execCreate->setCmd(QStringList({QStringLiteral("ls"), QStringLiteral("-l")}));
+    QVERIFY(execCreate->exec());
+
+    const QString execId = execCreate->replyData().object().value(QLatin1String("Id")).toString();
+
+    auto execStart = new StartExecInstanceJob(this);
+    execStart->setId(execId);
+    execStart->setDetach(true);
+    QVERIFY(execStart->exec());
 
     // stop container
     auto stop = new StopContainerJob(this);
@@ -242,7 +261,7 @@ void ApiCallsTest::testContainerOperationsAsync()
 {
     const QString containerName = QStringLiteral("/my-little-container-async");
     QVariantHash containerConfig;
-    containerConfig.insert(QStringLiteral("Image"), QStringLiteral("hello-world:latest"));
+    containerConfig.insert(QStringLiteral("Image"), QStringLiteral("nginx:latest"));
 
     QString containerId;
 
@@ -288,7 +307,7 @@ void ApiCallsTest::testContainerOperationsAsync()
         QVERIFY(!model->contains(QLatin1String("/ahsdfashdf")));
         QVERIFY(!model->contains(QLatin1String("adasdf")));
         QVERIFY(!model->contains(QLatin1String()));
-        QVERIFY(model->containsImage(QLatin1String("hello-world:latest")));
+        QVERIFY(model->containsImage(QLatin1String("nginx:latest")));
         QVERIFY(!model->containsImage(QLatin1String("dummer:schiss")));
         QVERIFY(!model->containsImage(QLatin1String()));
     }
@@ -308,6 +327,51 @@ void ApiCallsTest::testContainerOperationsAsync()
         QCOMPARE(finishedSpy.at(0).at(0).value<StartContainerJob*>(), start);
         QCOMPARE(resultSpy.count(), 1);
         QCOMPARE(resultSpy.at(0).at(0).value<StartContainerJob*>(), start);
+        QCOMPARE(failedSpy.count(), 0);
+        QCOMPARE(succeededSpy.count(), 1);
+        QVERIFY(succeededSpy.at(0).at(0).toJsonDocument().isEmpty());
+    }
+
+    // run command inside container
+    auto execCreate = new CreateExecInstanceJob(this);
+    execCreate->setId(containerId);
+    execCreate->setCmd(QStringList({QStringLiteral("ls"), QStringLiteral("-l")}));
+    {
+        QSignalSpy finishedSpy(execCreate, &SJob::finished);
+        QSignalSpy resultSpy(execCreate, &SJob::result);
+        QSignalSpy succeededSpy(execCreate, &Job::succeeded);
+        QSignalSpy failedSpy(execCreate, &Job::failed);
+        execCreate->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(execCreate->error(), 0);
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<CreateExecInstanceJob*>(), execCreate);
+        QCOMPARE(resultSpy.count(), 1);
+        QCOMPARE(resultSpy.at(0).at(0).value<CreateExecInstanceJob*>(), execCreate);
+        QCOMPARE(failedSpy.count(), 0);
+        QCOMPARE(succeededSpy.count(), 1);
+        QVERIFY(!succeededSpy.at(0).at(0).toJsonDocument().object().value(QStringLiteral("Id")).toString().isEmpty());
+    }
+
+    const QString execId = execCreate->replyData().object().value(QStringLiteral("Id")).toString();
+    QVERIFY(!execId.isEmpty());
+
+    auto execStart = new StartExecInstanceJob(this);
+    execStart->setId(execId);
+    execStart->setDetach(true);
+    execStart->start();
+    {
+        QSignalSpy finishedSpy(execStart, &SJob::finished);
+        QSignalSpy resultSpy(execStart, &SJob::result);
+        QSignalSpy succeededSpy(execStart, &Job::succeeded);
+        QSignalSpy failedSpy(execStart, &Job::failed);
+        execStart->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(execStart->error(), 0);
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<StartExecInstanceJob*>(), execStart);
+        QCOMPARE(resultSpy.count(), 1);
+        QCOMPARE(resultSpy.at(0).at(0).value<StartExecInstanceJob*>(), execStart);
         QCOMPARE(failedSpy.count(), 0);
         QCOMPARE(succeededSpy.count(), 1);
         QVERIFY(succeededSpy.at(0).at(0).toJsonDocument().isEmpty());
