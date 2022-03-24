@@ -11,6 +11,8 @@
 #include <Schauer/StartContainerJob>
 #include <Schauer/StopContainerJob>
 #include <Schauer/RemoveContainerJob>
+#include <Schauer/CreateExecInstanceJob>
+#include <Schauer/StartExecInstanceJob>
 #include "testconfig.h"
 
 using namespace Schauer;
@@ -35,6 +37,8 @@ private Q_SLOTS:
     void testStartContainerJob();
     void testStopContainerJob();
     void testRemoveContainerJob();
+    void testCreateExecInstanceJob();
+    void testStartExecInstanceJob();
 
     void cleanupTestCase() {}
 };
@@ -292,6 +296,195 @@ void JobsTest::testRemoveContainerJob()
         QCOMPARE(spy.count(), 1);
         QCOMPARE(spy.at(0).at(0).toBool(), true);
         QCOMPARE(job->removeLinks(), true);
+    }
+}
+
+void JobsTest::testCreateExecInstanceJob()
+{
+    auto job = new CreateExecInstanceJob(this);
+    job->setConfiguration(new TestConfig(this));
+    job->setAutoDelete(false);
+
+    // test missing id
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), static_cast<int>(Schauer::InvalidInput));
+
+    // test id property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::idChanged);
+        QVERIFY(job->id().isEmpty()); // default value
+        job->setId(QStringLiteral("new-id"));
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toString(), QStringLiteral("new-id"));
+        QCOMPARE(job->id(), QStringLiteral("new-id"));
+    }
+
+    // test attachStdin property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::attachStdinChanged);
+        QVERIFY(!job->attachStdin()); // default value
+        job->setAttachStdin(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->attachStdin(), true);
+    }
+
+    // test attachStdout property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::attachStdoutChanged);
+        QVERIFY(!job->attachStdout()); // default value
+        job->setAttachStdout(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->attachStdout(), true);
+    }
+
+    // test attachStderr property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::attachStderrChanged);
+        QVERIFY(!job->attachStderr()); // default value
+        job->setAttachStderr(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->attachStderr(), true);
+    }
+
+    // test detachKeys property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::detachKeysChanged);
+        QVERIFY(job->detachKeys().isEmpty()); // default value
+        job->setDetachKeys(QStringLiteral("z"));
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toString(), QStringLiteral("z"));
+        QCOMPARE(job->detachKeys(), QStringLiteral("z"));
+    }
+
+    // test invalid detachKeys
+    {
+        job->setDetachKeys(QStringLiteral("abc"));
+        QVERIFY(!job->exec());
+        QCOMPARE(job->error(), static_cast<int>(Schauer::InvalidInput));
+    }
+
+    // test tty property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::ttyChanged);
+        QVERIFY(!job->tty()); // default value
+        job->setTty(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->tty(), true);
+    }
+
+    // test env property
+    {
+        const QStringList newEnvList({QStringLiteral("FOO=bar"), QStringLiteral("BAR=baz")});
+        QSignalSpy spy(job, &CreateExecInstanceJob::envChanged);
+        QVERIFY(job->env().empty()); // default value;
+        job->setEnv(newEnvList);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toStringList(), newEnvList);
+        QCOMPARE(job->env(), newEnvList);
+
+        job->addEnv(QStringLiteral("FORENAME=Tommy"));
+        QVERIFY(job->env().contains(QStringLiteral("FORENAME=Tommy")));
+        QCOMPARE(spy.count(), 2);
+
+        job->addEnv(QStringLiteral("SURNAME"), QStringLiteral("Atkins"));
+        QVERIFY(job->env().contains(QStringLiteral("SURNAME=Atkins")));
+        QCOMPARE(spy.count(), 3);
+
+        job->removeEnv(QStringLiteral("BAR=baz"));
+        QVERIFY(!job->env().contains(QStringLiteral("BAR=baz")));
+        QCOMPARE(spy.count(), 4);
+    }
+
+    // test cmd property missing
+    {
+        QVERIFY(!job->exec());
+        QCOMPARE(job->error(), static_cast<int>(Schauer::InvalidInput));
+    }
+
+    // test cmd property
+    {
+        const QStringList newCmd({QStringLiteral("ls"), QStringLiteral("-l")});
+        QSignalSpy spy(job, &CreateExecInstanceJob::cmdChanged);
+        QVERIFY(job->cmd().empty()); // default value
+        job->setCmd(newCmd);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toStringList(), newCmd);
+        QCOMPARE(job->cmd(), newCmd);
+    }
+
+    // test privileged property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::privilegedChanged);
+        QVERIFY(!job->privileged()); // default value
+        job->setPrivileged(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->privileged(), true);
+    }
+
+    // test user property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::userChanged);
+        QVERIFY(job->user().isEmpty()); // default value
+        job->setUser(QStringLiteral("my-user"));
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toString(), QStringLiteral("my-user"));
+        QCOMPARE(job->user(), QStringLiteral("my-user"));
+    }
+
+    // test workingDir property
+    {
+        QSignalSpy spy(job, &CreateExecInstanceJob::workingDirChanged);
+        QVERIFY(job->workingDir().isEmpty()); // default value
+        job->setWorkingDir(QStringLiteral("/my/working/dir"));
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toString(), QStringLiteral("/my/working/dir"));
+        QCOMPARE(job->workingDir(), QStringLiteral("/my/working/dir"));
+    }
+}
+
+void JobsTest::testStartExecInstanceJob()
+{
+    auto job = new StartExecInstanceJob(this);
+    job->setConfiguration(new TestConfig(this));
+    job->setAutoDelete(false);
+
+    // test missing id
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), static_cast<int>(Schauer::InvalidInput));
+
+    // test id property
+    {
+        QSignalSpy spy(job, &StartExecInstanceJob::idChanged);
+        QVERIFY(job->id().isEmpty()); // default value
+        job->setId(QStringLiteral("new-id"));
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toString(), QStringLiteral("new-id"));
+        QCOMPARE(job->id(), QStringLiteral("new-id"));
+    }
+
+    // test detach property
+    {
+        QSignalSpy spy(job, &StartExecInstanceJob::detachChanged);
+        QVERIFY(!job->detach()); // default value
+        job->setDetach(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->detach(), true);
+    }
+
+    // test tty property
+    {
+        QSignalSpy spy(job, &StartExecInstanceJob::ttyChanged);
+        QVERIFY(!job->tty()); // default value
+        job->setTty(true);
+        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.at(0).at(0).toBool(), true);
+        QCOMPARE(job->tty(), true);
     }
 }
 
