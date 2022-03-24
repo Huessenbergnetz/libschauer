@@ -49,8 +49,15 @@ class SCHAUER_LIBRARY StartContainerJob : public Job
     /*!
      * \brief Set this to override the key sequence for detaching a container.
      *
-     * Allowed values are a single character \a a-Z or \a ctrl-<value> where \a <value>
-     * is one of \a a-z, \a @, \a ^, \a [, \a _ or \a , .
+     * Allowed values are a single character \c a-Z or \c ctrl-&lsaquo;value&rsaquo; where \c &lsaquo;value&rsaquo;
+     * is one of \c a-z, \c @, \c ^, \c [, \c _ or \c , . It can set multiple sequences by concatenating them separated by comm.
+     * By default this property holds an empty string.
+     *
+     * \par Example
+     * \code{.cpp}
+     * auto job = new StartContainerJob();
+     * job->setDetachKeys(QStringLiteral("ctrl-p,ctrl-q"));
+     * \endcode
      *
      * \par Access functions
      * \li QString detachKeys() const
