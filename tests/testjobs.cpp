@@ -471,10 +471,10 @@ void JobsTest::testStartExecInstanceJob()
     {
         QSignalSpy spy(job, &StartExecInstanceJob::detachChanged);
         QVERIFY(job->detach()); // default value
-        job->setDetach(true);
+        job->setDetach(false);
         QCOMPARE(spy.count(), 1);
-        QCOMPARE(spy.at(0).at(0).toBool(), true);
-        QCOMPARE(job->detach(), true);
+        QCOMPARE(spy.at(0).at(0).toBool(), false);
+        QCOMPARE(job->detach(), false);
     }
 
     // test tty property
