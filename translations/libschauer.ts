@@ -143,7 +143,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="libschauer-error-remove-container-missing-id">
-        <source>Can n ot remove a container without a valid container ID.</source>
+        <source>Can not remove a container without a valid container ID.</source>
+        <oldsource>Can n ot remove a container without a valid container ID.</oldsource>
         <extracomment>Error message if container id is missing when tryping to remove a container</extracomment>
         <translation type="unfinished"></translation>
     </message>
@@ -162,14 +163,47 @@
         <extracomment>Error message if container detachKeys property is malformed</extracomment>
         <translation type="unfinished"></translation>
     </message>
-    <message id="libschauer-job-desc-sto-container-title">
-        <source>Stopping container with ID %1</source>
-        <extracomment>Job description title</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="libschauer-error-stop-container-missing-id">
         <source>Can not stop a container without a valid container ID.</source>
         <extracomment>Error message if container id is missing when trying to stop a container</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-job-desc-create-exec-instance">
+        <source>Creating new execution instance for container %1</source>
+        <extracomment>Job description title, %1 will be replaced by container id/name/digest</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-create-exec-instance-err-empty-id">
+        <source>Can not create a new execution instance without a valid container ID.</source>
+        <extracomment>Error message when creating a new exec instance</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-create-exec-instance-err-invalid-detachkeys">
+        <source>Invalid “detachKeys” parameter. Format is a single charachter a-Z or “ctrl-&lt;value&gt;” where &lt;value&gt; is one of: a-z, @, ^, [, _ or ,.</source>
+        <extracomment>Error message if exec instance detachKeys property is malformed</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-create-exec-instance-err-empty-cmd">
+        <source>Can not create a new execution instance without any command to execute.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-job-desc-start-exec">
+        <source>Starting execution instance.</source>
+        <extracomment>Job description title</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-job-desc-field1-name">
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-start-exec-instance-err-missing-id">
+        <source>Missing execution instance ID to start.</source>
+        <extracomment>Error when trying to start an exec instance</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="libschauer-job-desc-stop-container-title">
+        <source>Stopping container with ID %1</source>
+        <extracomment>Job description title</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
