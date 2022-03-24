@@ -358,7 +358,6 @@ void ApiCallsTest::testContainerOperationsAsync()
 
     auto execStart = new StartExecInstanceJob(this);
     execStart->setId(execId);
-    execStart->setDetach(true);
     execStart->start();
     {
         QSignalSpy finishedSpy(execStart, &SJob::finished);

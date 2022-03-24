@@ -470,7 +470,7 @@ void JobsTest::testStartExecInstanceJob()
     // test detach property
     {
         QSignalSpy spy(job, &StartExecInstanceJob::detachChanged);
-        QVERIFY(!job->detach()); // default value
+        QVERIFY(job->detach()); // default value
         job->setDetach(true);
         QCOMPARE(spy.count(), 1);
         QCOMPARE(spy.at(0).at(0).toBool(), true);

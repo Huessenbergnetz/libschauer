@@ -27,7 +27,7 @@ public:
     bool checkInput() override;
 
     QString id;
-    bool detach = false;
+    bool detach = true;
     bool tty = false;
 
 private:
