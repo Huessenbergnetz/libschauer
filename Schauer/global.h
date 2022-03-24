@@ -8,6 +8,7 @@
 
 #include "schauer_exports.h"
 #include <QLocale>
+#include <QVersionNumber>
 
 /*!
  * \brief The root namespace for libschauer.
@@ -47,6 +48,11 @@ SCHAUER_LIBRARY AbstractNamFactory* networkAccessManagerFactory();
  * Returns \c true on success, otherwise \c false.
  */
 SCHAUER_LIBRARY bool loadTranslations(const QLocale &locale = QLocale());
+
+/*!
+ * \brief Returns the version of the currently used libschauer.
+ */
+SCHAUER_LIBRARY QVersionNumber version();
 
 }
 

@@ -109,3 +109,8 @@ bool Schauer::loadTranslations(const QLocale &locale)
         return false;
     }
 }
+
+QVersionNumber Schauer::version()
+{
+    return QVersionNumber::fromString(QStringLiteral(SCHAUER_VERSION));
+}
