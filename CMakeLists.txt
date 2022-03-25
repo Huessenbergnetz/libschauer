@@ -41,7 +41,7 @@ option(BUILD_SHARED_LIBS "Enable the build of shared libraries" ON)
 option(BUILD_DOCS "Enable the build of doxygen docs" OFF)
 option(BUILD_DOCS_QUIET "Tell doxygen to be quiet while building the documentation." OFF)
 option(ENABLE_MAINTAINER_FLAGS "Enables some build flags used for development" OFF)
-option(WITH_KDE "Use the original KJobs implementation of KDE Frameworks" OFF)
+option(WITH_KDE "Use the original KJobs implementation of KDE Frameworks" ON)
 option(WITH_TESTS "Build the tests" OFF)
 option(WITH_API_TESTS "Build API tests that require a running docker instance" OFF)
 
