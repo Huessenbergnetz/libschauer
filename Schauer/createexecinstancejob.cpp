@@ -6,6 +6,7 @@
 #include "createexecinstancejob_p.h"
 #include "logging.h"
 #include <QTimer>
+#include <QRegularExpression>
 
 using namespace Schauer;
 
