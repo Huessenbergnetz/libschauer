@@ -164,6 +164,7 @@ if (BUILD_DOCS)
     set(DOXYGEN_HTML_TIMESTAMP "YES")
     set(DOXYGEN_TAGFILES ${ONLINETAGS})
     set(DOXYGEN_HTML_OUTPUT "webdocs")
+    set(DOXYGEN_HTML_FOOTER "${CMAKE_SOURCE_DIR}/dox/webFooter.html")
     doxygen_add_docs(webdocs
         ${CMAKE_CURRENT_SOURCE_DIR}
         COMMENT "Generate HTML documentation for online usage"
@@ -173,6 +174,7 @@ if (BUILD_DOCS)
     set(DOXYGEN_HTML_TIMESTAMP "NO")
     set(DOXYGEN_TAGFILES ${LOCALHTMLTAGS})
     set(DOXYGEN_HTML_OUTPUT "htmldocs")
+    set(DOXYGEN_HTML_FOOTER "")
     doxygen_add_docs(htmldocs
         ${CMAKE_CURRENT_SOURCE_DIR}
         COMMENT "Generate HTML documentation for local usage"
@@ -184,6 +186,7 @@ if (BUILD_DOCS)
         message(STATUS "qhelpgenerator found. QCH docs building available.")
         set(DOXYGEN_TAGFILES ${QCHTAGS})
         set(DOXYGEN_HTML_OUTPUT "qtdocs")
+        set(DOXYGEN_HTML_FOOTER "")
         set(DOXYGEN_GENERATE_QHP "YES")
         set(DOXYGEN_QHP_NAMESPACE "de.huessenbergnetz.schauer.${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}${PROJECT_VERSION_PATCH}")
         set(DOXYGEN_QHP_VIRTUAL_FOLDER "libschauer")
